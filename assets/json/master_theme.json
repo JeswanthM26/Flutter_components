@@ -1,15 +1,20 @@
 {
   "colors": {
-    "primaryColor": "#3B82F6",
+    "primaryColor1": "#3B82F6",
+    "backgroundColor1": "#F6F6F6",
+    "primaryColor": "#0054A6",
+    "secondaryColor": "#083C70",
+    "backgroundColor": "#EDEEF1",
     "errorColor": "#EF4444",
     "disabledColor": "#A0A0A0",
     "labelColor": "#333333",
+    "colorWhite": "#FFFFFF",
+    "colorBlack": "#11111",
     "textColor": "#000000",
-    "backgroundColor": "#F6F6F6",
     "filledColor": "#E9E9E9"
   },
   "fonts": {
-    "fontFamily": "Inter",
+    "fontFamily": "Outfit",
     "fontSize": 14,
     "labelFontSize": 12
   },
