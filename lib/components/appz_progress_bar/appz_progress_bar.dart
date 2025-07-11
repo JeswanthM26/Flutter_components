@@ -29,17 +29,11 @@ class AppzProgressBar extends StatefulWidget {
 
 class _AppzProgressBarState extends State<AppzProgressBar> {
   late ProgressBarStyleConfig cfg;
-  late double fillPercent;
-  late String displayText;
-  late String category;
 
   @override
   void initState() {
     super.initState();
     cfg = ProgressBarStyleConfig.instance;
-    fillPercent = widget.percentage.clamp(0.0, 100.0);
-    displayText = widget.labelText ?? '${fillPercent.toInt()}${widget.showPercentage ? '%' : ''}';
-    category = _categoryFromLabelPosition(widget.labelPosition);
   }
 
   String _categoryFromLabelPosition(ProgressBarLabelPosition position) {
@@ -63,6 +57,11 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
 
   @override
   Widget build(BuildContext context) {
+    final fillPercent = widget.percentage.clamp(0.0, 100.0);
+    final displayText = widget.labelText ??
+        '${fillPercent.toInt()}${widget.showPercentage ? '%' : ''}';
+    final category = _categoryFromLabelPosition(widget.labelPosition);
+
     final width = cfg.getDouble('width', category: category);
     final height = cfg.getDouble('height', category: category);
     final borderRadius = cfg.getDouble('borderRadius');
@@ -88,12 +87,13 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
 
     switch (widget.labelPosition) {
       case ProgressBarLabelPosition.none:
-        return _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor);
+        return _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent);
 
       case ProgressBarLabelPosition.right:
         return Row(
           children: [
-            _buildBarOnly(width - 30, height, borderRadius, _getFillWidth(fillPercent, width - 30), bgColor, fillColor),
+            _buildBarOnly(width - 30, height, borderRadius,
+                _getFillWidth(fillPercent, width - 30), bgColor, fillColor, fillPercent),
             SizedBox(width: labelSpacing),
             Text(displayText, style: labelStyle),
           ],
@@ -103,7 +103,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor),
+            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent),
             SizedBox(height: labelSpacing),
             Text(displayText, style: labelStyle),
           ],
@@ -133,7 +133,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
               ),
             ),
             SizedBox(height: floatingOffset),
-            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor),
+            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent),
           ],
         );
 
@@ -141,7 +141,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor),
+            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent),
             SizedBox(height: floatingOffset),
             Align(
               alignment: Alignment((fillPercent / 50.0) - 1, 0),
@@ -166,7 +166,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
     }
   }
 
-  Widget _buildBarOnly(double width, double height, double radius, double fillWidth, Color bg, Color fill) {
+  Widget _buildBarOnly(double width, double height, double radius, double fillWidth, Color bg, Color fill, double fillPercent) {
     return SizedBox(
       width: width,
       height: height,
