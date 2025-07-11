@@ -1,11 +1,11 @@
 name: apz_flutter_components
-description: "A new Flutter package project."
-version: 0.0.1
-homepage:
+description: "A reusable UI component library for Flutter."
+version: 0.0.2
+homepage: https://github.com/CHETHANK080300/APZ_FLUTTER_COMPONENTS.git
 
 environment:
-  sdk: ^3.8.1
-  flutter: ">=1.17.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
@@ -14,6 +14,7 @@ dependencies:
   flutter_date_pickers: ^0.4.3
   intl: ^0.20.2
   phonecodes: ^0.0.4
+  file_picker: ^10.2.0
 
 dev_dependencies:
   flutter_test:
