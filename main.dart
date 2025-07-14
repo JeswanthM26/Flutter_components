@@ -1,4 +1,4 @@
-import 'package:apz_flutter_components/components/appz_progress_bar/example_pg.dart';
+import 'example/example_pg.dart';
 import 'package:apz_flutter_components/components/appz_progress_bar/progress_bar_style_config.dart';
 import 'package:flutter/material.dart';
 import 'lib/components/appz_dropdown_field/dropdown_style_config.dart';
