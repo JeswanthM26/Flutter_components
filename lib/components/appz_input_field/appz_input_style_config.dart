@@ -110,9 +110,7 @@ class AppzStyleConfig {
       case AppzFieldState.filled:
         currentStyle = _getRawStyleForStateName('filled');
         break;
-      default:
-        currentStyle = _defaultStyle;
-    }
+      }
     if (isFilled && state != AppzFieldState.filled) {
       final filledJson = _rawJsonStyles['filled'];
       if (filledJson != null) {
