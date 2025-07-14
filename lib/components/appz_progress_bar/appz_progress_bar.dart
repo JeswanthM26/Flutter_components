@@ -51,58 +51,50 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
     }
   }
 
-  double _getFillWidth(double percentage, double totalWidth) {
-    return (percentage.clamp(0.0, 100.0) / 100.0) * totalWidth;
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Calculate these on every build
     final fillPercent = widget.percentage.clamp(0.0, 100.0);
-    final displayText = widget.labelText ?? '${fillPercent.toInt()}${widget.showPercentage ? '%' : ''}';
+    final displayText = widget.labelText ??
+        '${fillPercent.toInt()}${widget.showPercentage ? '%' : ''}';
     final category = _categoryFromLabelPosition(widget.labelPosition);
-    final borderRadius = cfg.getDouble('borderRadius');
-    final fontSize = cfg.getDouble('fontSize');
-    final fontFamily = cfg.get('fontFamily') ?? 'Outfit';
-    final labelColor = cfg.getColor('labelColor');
-    final labelPadding = cfg.getEdgeInsets('labelPadding');
-    final labelSpacing = cfg.getDouble('labelSpacing');
-    final floatingOffset = cfg.getDouble('floatingLabelOffset');
-    final floatingBg = cfg.getColor('floatingLabelBackgroundColor');
-    final floatingShadow = cfg.getColor('floatingLabelShadowColor');
-    final bgColor = cfg.getColor('backgroundColor');
-    final fillColor = cfg.getColor('fillColor');
-
-    final labelStyle = TextStyle(
-      fontSize: fontSize,
-      fontWeight: FontWeight.w500,
-      fontFamily: fontFamily,
-      color: labelColor,
-    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Use parent constraints for width, fallback to 200 if unbounded
-        final width = (constraints.hasBoundedWidth && constraints.maxWidth != double.infinity)
+        double screenWidth = MediaQuery.of(context).size.width;
+        final availableWidth = (constraints.hasBoundedWidth && constraints.maxWidth != double.infinity)
             ? constraints.maxWidth
-            : 200.0;
-        // Always use config for height
+            : screenWidth;
+        final paddedWidth = availableWidth;
         final height = cfg.getDouble('height', category: category);
+        final borderRadius = cfg.getDouble('borderRadius');
+        final fontSize = cfg.getDouble('fontSize');
+        final fontFamily = cfg.get('fontFamily') ?? 'Outfit';
+        final labelColor = cfg.getColor('labelColor');
+        final labelPadding = cfg.getEdgeInsets('labelPadding');
+        final labelSpacing = cfg.getDouble('labelSpacing');
+        final floatingOffset = cfg.getDouble('floatingLabelOffset');
+        final floatingBg = cfg.getColor('floatingLabelBackgroundColor');
+        final floatingShadow = cfg.getColor('floatingLabelShadowColor');
+        final bgColor = cfg.getColor('backgroundColor');
+        final fillColor = cfg.getColor('fillColor');
 
-        // Use config values directly (no scaling)
-        final fixedHorizontalPadding = 16.0;
-        final paddedWidth = width - 2 * fixedHorizontalPadding;
-        final fillWidth = _getFillWidth(fillPercent, paddedWidth);
+        final labelStyle = TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.w500,
+          fontFamily: fontFamily,
+          color: labelColor,
+        );
 
         Widget barWidget;
         switch (widget.labelPosition) {
           case ProgressBarLabelPosition.none:
-            barWidget = _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent);
+            barWidget = _buildBarOnly(paddedWidth, height, borderRadius, fillPercent, bgColor, fillColor);
             break;
           case ProgressBarLabelPosition.right:
             barWidget = Row(
               children: [
-                _buildBarOnly(paddedWidth - 30, height, borderRadius, _getFillWidth(fillPercent, paddedWidth - 30), bgColor, fillColor, fillPercent),
+                _buildBarOnly(paddedWidth - 30, height, borderRadius,
+                    fillPercent, bgColor, fillColor),
                 SizedBox(width: labelSpacing),
                 Text(displayText, style: labelStyle),
               ],
@@ -112,7 +104,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
             barWidget = Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent),
+                _buildBarOnly(paddedWidth, height, borderRadius, fillPercent, bgColor, fillColor),
                 SizedBox(height: labelSpacing),
                 Text(displayText, style: labelStyle),
               ],
@@ -132,9 +124,9 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
                       borderRadius: BorderRadius.circular(4),
                       boxShadow: [
                         BoxShadow(
-                          color: floatingShadow.withOpacity(0.4),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                          color: floatingShadow.withOpacity(0.5),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
                         ),
                       ],
                     ),
@@ -142,7 +134,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
                   ),
                 ),
                 SizedBox(height: floatingOffset),
-                _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent),
+                _buildBarOnly(paddedWidth, height, borderRadius, fillPercent, bgColor, fillColor),
               ],
             );
             break;
@@ -150,7 +142,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
             barWidget = Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor, fillPercent),
+                _buildBarOnly(paddedWidth, height, borderRadius, fillPercent, bgColor, fillColor),
                 SizedBox(height: floatingOffset),
                 Align(
                   alignment: Alignment((fillPercent / 50.0) - 1, 0),
@@ -161,9 +153,9 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
                       borderRadius: BorderRadius.circular(4),
                       boxShadow: [
                         BoxShadow(
-                          color: floatingShadow.withOpacity(0.4),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                          color: floatingShadow.withOpacity(0.5),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
                         ),
                       ],
                     ),
@@ -182,7 +174,8 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
     );
   }
 
-  Widget _buildBarOnly(double width, double height, double radius, double fillWidth, Color bg, Color fill, double fillPercent) {
+  Widget _buildBarOnly(double width, double height, double radius, double fillPercent, Color bg, Color fill) {
+    final fillWidth = (fillPercent.clamp(0.0, 100.0) / 100.0) * width;
     return SizedBox(
       width: width,
       height: height,
