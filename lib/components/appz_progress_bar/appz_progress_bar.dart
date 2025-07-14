@@ -166,6 +166,7 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
             );
             break;
         }
+        // Always wrap barWidget in Padding for consistent horizontal padding
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: barWidget,
