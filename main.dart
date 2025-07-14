@@ -1,8 +1,8 @@
+import 'package:apz_flutter_components/components/appz_progress_bar/example_pg.dart';
 import 'package:apz_flutter_components/components/appz_progress_bar/progress_bar_style_config.dart';
 import 'package:flutter/material.dart';
 import 'lib/components/appz_dropdown_field/dropdown_style_config.dart';
 import 'lib/components/appz_input_field/appz_input_style_config.dart';
-import 'example/appz_input_field_example_page.dart';
 import 'lib/common/ui_config_resolver.dart';
 
 Future<void> main() async {
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AppzInputFieldExamplePage(),
+      home: const ExamplePg(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }

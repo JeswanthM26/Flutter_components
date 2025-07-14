@@ -63,8 +63,6 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
 
   @override
   Widget build(BuildContext context) {
-    final width = cfg.getDouble('width', category: category);
-    final height = cfg.getDouble('height', category: category);
     final borderRadius = cfg.getDouble('borderRadius');
     final fontSize = cfg.getDouble('fontSize');
     final fontFamily = cfg.get('fontFamily') ?? 'Outfit';
@@ -84,86 +82,106 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
       color: labelColor,
     );
 
-    final fillWidth = _getFillWidth(fillPercent, width);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Use parent constraints for width, fallback to 200 if unbounded
+        final width = (constraints.hasBoundedWidth && constraints.maxWidth != double.infinity)
+            ? constraints.maxWidth
+            : 200.0;
+        // Always use config for height
+        final height = cfg.getDouble('height', category: category);
 
-    switch (widget.labelPosition) {
-      case ProgressBarLabelPosition.none:
-        return _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor);
+        // Use config values directly (no scaling)
+        final fixedHorizontalPadding = 16.0;
+        final paddedWidth = width - 2 * fixedHorizontalPadding;
+        final fillWidth = _getFillWidth(fillPercent, paddedWidth);
 
-      case ProgressBarLabelPosition.right:
-        return Row(
-          children: [
-            _buildBarOnly(width - 30, height, borderRadius, _getFillWidth(fillPercent, width - 30), bgColor, fillColor),
-            SizedBox(width: labelSpacing),
-            Text(displayText, style: labelStyle),
-          ],
-        );
-
-      case ProgressBarLabelPosition.bottom:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor),
-            SizedBox(height: labelSpacing),
-            Text(displayText, style: labelStyle),
-          ],
-        );
-
-      case ProgressBarLabelPosition.topFloating:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: floatingOffset),
-            Align(
-              alignment: Alignment((fillPercent / 50.0) - 1, 0),
-              child: Container(
-                padding: labelPadding,
-                decoration: BoxDecoration(
-                  color: floatingBg,
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: floatingShadow,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+        Widget barWidget;
+        switch (widget.labelPosition) {
+          case ProgressBarLabelPosition.none:
+            barWidget = _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor);
+            break;
+          case ProgressBarLabelPosition.right:
+            barWidget = Row(
+              children: [
+                _buildBarOnly(paddedWidth - 30, height, borderRadius, _getFillWidth(fillPercent, paddedWidth - 30), bgColor, fillColor),
+                SizedBox(width: labelSpacing),
+                Text(displayText, style: labelStyle),
+              ],
+            );
+            break;
+          case ProgressBarLabelPosition.bottom:
+            barWidget = Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor),
+                SizedBox(height: labelSpacing),
+                Text(displayText, style: labelStyle),
+              ],
+            );
+            break;
+          case ProgressBarLabelPosition.topFloating:
+            barWidget = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: floatingOffset),
+                Align(
+                  alignment: Alignment((fillPercent / 50.0) - 1, 0),
+                  child: Container(
+                    padding: labelPadding,
+                    decoration: BoxDecoration(
+                      color: floatingBg,
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: floatingShadow.withOpacity(0.4),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
+                    child: Text(displayText, style: labelStyle),
+                  ),
                 ),
-                child: Text(displayText, style: labelStyle),
-              ),
-            ),
-            SizedBox(height: floatingOffset),
-            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor),
-          ],
-        );
-
-      case ProgressBarLabelPosition.bottomFloating:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildBarOnly(width, height, borderRadius, fillWidth, bgColor, fillColor),
-            SizedBox(height: floatingOffset),
-            Align(
-              alignment: Alignment((fillPercent / 50.0) - 1, 0),
-              child: Container(
-                padding: labelPadding,
-                decoration: BoxDecoration(
-                  color: floatingBg,
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: floatingShadow,
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
+                SizedBox(height: floatingOffset),
+                _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor),
+              ],
+            );
+            break;
+          case ProgressBarLabelPosition.bottomFloating:
+            barWidget = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildBarOnly(paddedWidth, height, borderRadius, fillWidth, bgColor, fillColor),
+                SizedBox(height: floatingOffset),
+                Align(
+                  alignment: Alignment((fillPercent / 50.0) - 1, 0),
+                  child: Container(
+                    padding: labelPadding,
+                    decoration: BoxDecoration(
+                      color: floatingBg,
+                      borderRadius: BorderRadius.circular(4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: floatingShadow.withOpacity(0.4),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
+                    child: Text(displayText, style: labelStyle),
+                  ),
                 ),
-                child: Text(displayText, style: labelStyle),
-              ),
-            ),
-          ],
+              ],
+            );
+            break;
+        }
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: barWidget,
         );
-    }
+      },
+    );
   }
 
   Widget _buildBarOnly(double width, double height, double radius, double fillWidth, Color bg, Color fill) {

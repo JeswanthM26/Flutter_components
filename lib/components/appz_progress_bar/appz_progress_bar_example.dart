@@ -133,7 +133,7 @@ class _AppzProgressBarTestState extends State<AppzProgressBarTest> {
                     ),
                   ),
                   // Bottom Floating Label
-                  Container(
+                  SizedBox(
                     width: 220,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
