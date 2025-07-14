@@ -11,7 +11,7 @@ class ExamplePg extends StatelessWidget {
         appBar: AppBar(
           title: Text('Example'),
         ),
-        body:  AppzProgressBar(percentage:50.0,labelPosition: ProgressBarLabelPosition.topFloating)
+        body:  AppzProgressBar(percentage:50.0,labelPosition: ProgressBarLabelPosition.bottom)
         ),
     );
   }
