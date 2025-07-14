@@ -104,8 +104,12 @@ class _AppzInputFieldState extends State<AppzInputField> {
 
   void _disposeMpinFields() {
     if (_mpinSegmentControllers.isNotEmpty) {
-      for (var controller in _mpinSegmentControllers) controller.dispose();
-      for (var focusNode in _mpinSegmentFocusNodes) focusNode.dispose();
+      for (var controller in _mpinSegmentControllers) {
+        controller.dispose();
+      }
+      for (var focusNode in _mpinSegmentFocusNodes) {
+        focusNode.dispose();
+      }
     }
   }
 

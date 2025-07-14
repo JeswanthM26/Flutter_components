@@ -95,9 +95,6 @@ class AppzStyleConfig {
     if (!_isInitialized) return _fallbackDefaultStyle;
     AppzStateStyle currentStyle;
     switch (state) {
-      case AppzFieldState.defaultState:
-        currentStyle = _defaultStyle;
-        break;
       case AppzFieldState.focused:
         currentStyle = _getRawStyleForStateName('focused');
         break;
@@ -109,6 +106,9 @@ class AppzStyleConfig {
         break;
       case AppzFieldState.filled:
         currentStyle = _getRawStyleForStateName('filled');
+        break;
+      case AppzFieldState.defaultState:
+        currentStyle = _defaultStyle;
         break;
       }
     if (isFilled && state != AppzFieldState.filled) {
