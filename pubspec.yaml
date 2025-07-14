@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
   dropdown_button2: ^2.3.9
   flutter_date_pickers: ^0.4.3
-  intl: ^0.20.2
+  intl: 0.20.2
   phonecodes: ^0.0.4
   file_picker: ^10.2.0
 
@@ -26,13 +26,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/json/
 
   # To add assets to your package, add an assets section, like this:
-  assets:
-    - assets/json/master_theme.json
-    - assets/json/dropdown_ui_config.json
-    - assets/json/input_ui_config.json
-    - assets/json/progress_bar_ui_config.json
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/to/asset-from-package

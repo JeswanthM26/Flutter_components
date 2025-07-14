@@ -16,7 +16,7 @@
       }
     },
     "secondary": {
-      "borderColor": "{colors.sceBorderColor}",
+      "borderColor": "{colors.secBorderColor}",
       "textColor": "{colors.secTextColor}",
       "backgroundColor": "{colors.secondaryColor}",
       "hover": {

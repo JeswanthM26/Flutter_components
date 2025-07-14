@@ -93,10 +93,26 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
           case ProgressBarLabelPosition.right:
             barWidget = Row(
               children: [
-                _buildBarOnly(paddedWidth - 30, height, borderRadius,
-                    fillPercent, bgColor, fillColor),
+                Expanded(
+                  child: _buildBarOnly(
+                    paddedWidth, // Use the full available width
+                    height,
+                    borderRadius,
+                    fillPercent,
+                    bgColor,
+                    fillColor,
+                  ),
+                ),
                 SizedBox(width: labelSpacing),
-                Text(displayText, style: labelStyle),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 80), // adjust as needed
+                  child: Text(
+                    displayText,
+                    style: labelStyle,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
               ],
             );
             break;
@@ -106,7 +122,12 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
               children: [
                 _buildBarOnly(paddedWidth, height, borderRadius, fillPercent, bgColor, fillColor),
                 SizedBox(height: labelSpacing),
-                Text(displayText, style: labelStyle),
+                Text(
+                  displayText,
+                  style: labelStyle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               ],
             );
             break;
@@ -130,7 +151,12 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
                         ),
                       ],
                     ),
-                    child: Text(displayText, style: labelStyle),
+                    child: Text(
+                      displayText,
+                      style: labelStyle,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
                 ),
                 SizedBox(height: floatingOffset),
@@ -159,7 +185,12 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
                         ),
                       ],
                     ),
-                    child: Text(displayText, style: labelStyle),
+                    child: Text(
+                      displayText,
+                      style: labelStyle,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
                 ),
               ],
@@ -176,9 +207,11 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
   }
 
   Widget _buildBarOnly(double width, double height, double radius, double fillPercent, Color bg, Color fill) {
-    final fillWidth = (fillPercent.clamp(0.0, 100.0) / 100.0) * width;
+    final minBarWidth = 40.0;
+    final safeWidth = width < minBarWidth ? minBarWidth : width;
+    final fillWidth = (fillPercent.clamp(0.0, 100.0) / 100.0) * safeWidth;
     return SizedBox(
-      width: width,
+      width: safeWidth,
       height: height,
       child: Stack(
         children: [
