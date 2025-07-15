@@ -185,9 +185,9 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
 
             const Text('Progress Bar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             AppzProgressBar(
-              percentage: 65,
+              percentage: 90,
               labelPosition: ProgressBarLabelPosition.right,
-              labelText: 'Progress',
+              //labelText: 'Progress',
             ),
             const SizedBox(height: 24),
 
