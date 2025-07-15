@@ -32,6 +32,7 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
   final _dropdownController = ValueNotifier<String?>(null);
   PlatformFile? _selectedFile;
   DateTime? _selectedDate;
+  // ignore: unused_field
   String? _phoneValue;
 
   // Category demo state
