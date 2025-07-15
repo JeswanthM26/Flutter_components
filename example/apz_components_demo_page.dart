@@ -14,6 +14,9 @@ import 'package:apz_flutter_components/components/apz_button/button_style_config
 import 'package:apz_flutter_components/components/appz_progress_bar/progress_bar_style_config.dart';
 import 'package:apz_flutter_components/common/ui_config_resolver.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:apz_flutter_components/components/appz_category/appz_category.dart';
+import 'package:apz_flutter_components/components/appz_category/appz_category_style_config.dart';
+import 'package:apz_flutter_components/components/appz_category/model/category_model.dart';
 
 class ApzComponentsDemoPage extends StatefulWidget {
   const ApzComponentsDemoPage({super.key});
@@ -29,7 +32,26 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
   final _dropdownController = ValueNotifier<String?>(null);
   PlatformFile? _selectedFile;
   DateTime? _selectedDate;
+  // ignore: unused_field
   String? _phoneValue;
+
+  // Category demo state
+  final ValueNotifier<List<CategoryItem>> _categoryItemsNotifier = ValueNotifier([
+    CategoryItem(id: 'cat1', label: 'Books', iconAsset: 'assets/icons/book.png'),
+    CategoryItem(id: 'cat2', label: 'Music', iconAsset: 'assets/icons/music.png'),
+    CategoryItem(id: 'cat3', label: 'Movies', iconAsset: 'assets/icons/video-play.png'),
+    CategoryItem(id: 'cat4', label: 'Games', iconAsset: 'assets/icons/game.png'),
+  ]);
+  final ValueNotifier<String?> _selectedCategoryIdNotifier = ValueNotifier('cat1');
+
+  // Progress bar demo state
+  double _progressValue = 65;
+
+  void _changeProgress(double delta) {
+    setState(() {
+      _progressValue = (_progressValue + delta).clamp(0, 100);
+    });
+  }
 
   @override
   void initState() {
@@ -44,10 +66,12 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
       final inputConfig = await resolver.loadAndResolve('assets/json/input_ui_config.json');
       final progressBarConfig = await resolver.loadAndResolve('assets/json/progress_bar_ui_config.json');
       final buttonConfig = await resolver.loadAndResolve('assets/json/button_ui_config.json');
+      final categoryConfig = await resolver.loadAndResolve('assets/json/category_ui_config.json');
       await DropdownStyleConfig.instance.loadFromResolved(dropdownConfig);
       await AppzStyleConfig.instance.loadFromResolved(inputConfig);
       await ProgressBarStyleConfig.instance.loadFromResolved(progressBarConfig);
       await ButtonStyleConfig.instance.loadFromResolved(buttonConfig);
+      await AppzCategoryStyleConfig.instance.loadFromResolved(categoryConfig);
       setState(() => _loading = false);
     } catch (e) {
       setState(() {
@@ -55,6 +79,25 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
         _loading = false;
       });
     }
+  }
+
+  Widget _sectionCard({required String title, required Widget child}) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            const SizedBox(height: 12),
+            child,
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -76,140 +119,184 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Input Fields', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            // Default Field
-            const Text('Default'),
-            AppzInputField(
-              label: 'Full Name',
-              hintText: 'Please enter your name here',
-              controller: _inputController,
-              fieldType: AppzFieldType.defaultType,
+            _sectionCard(
+              title: 'Category (Horizontal)',
+              child: AppzCategory(
+                itemsNotifier: _categoryItemsNotifier,
+                selectedIdNotifier: _selectedCategoryIdNotifier,
+                direction: Axis.horizontal,
+                onItemTap: (item) => setState(() => _selectedCategoryIdNotifier.value = item.id),
+              ),
             ),
-
-            // Disabled Field
-            const Text('Disabled'),
-            AppzInputField(
-              label: 'Disabled Name',
-              hintText: 'This field is disabled',
-              controller: _inputController,
-              fieldType: AppzFieldType.defaultType,
-              initialFieldState: AppzFieldState.disabled,
+            _sectionCard(
+              title: 'Category (Vertical)',
+              child: AppzCategory(
+                itemsNotifier: _categoryItemsNotifier,
+                selectedIdNotifier: _selectedCategoryIdNotifier,
+                direction: Axis.vertical,
+                onItemTap: (item) => setState(() => _selectedCategoryIdNotifier.value = item.id),
+              ),
             ),
-
-            // Mobile Input Field
-            const Text('Mobile Number'),
-            AppzInputField(
-              label: 'Mobile Number',
-              hintText: 'Enter 10-digit number',
-              fieldType: AppzFieldType.mobile,
-              validationType: AppzInputValidationType.mandatory,
+            _sectionCard(
+              title: 'Dropdown Field',
+              child: AppzDropdownField(
+                label: 'Select Option',
+                items: const ['Option 1', 'Option 2', 'Option 3'],
+                selectedItem: _dropdownController.value,
+                onChanged: (val) => setState(() => _dropdownController.value = val),
+                controller: _dropdownController,
+                isMandatory: true,
+              ),
             ),
-
-            // Aadhaar Input Field
-            const Text('Aadhaar Number'),
-            AppzInputField(
-              label: 'Aadhaar Number',
-              hintText: 'Enter 12-digit Aadhaar number',
-              fieldType: AppzFieldType.aadhaar,
-              validationType: AppzInputValidationType.mandatory,
+            _sectionCard(
+              title: 'Progress Bars',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      AppzButton(
+                        label: '-',
+                        appearance: AppzButtonAppearance.secondary,
+                        onPressed: () => _changeProgress(-10),
+                      ),
+                      const SizedBox(width: 16),
+                      Text('${_progressValue.toInt()}%', style: const TextStyle(fontSize: 18)),
+                      const SizedBox(width: 16),
+                      AppzButton(
+                        label: '+',
+                        appearance: AppzButtonAppearance.primary,
+                        onPressed: () => _changeProgress(10),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('No Label'),
+                  AppzProgressBar(
+                    percentage: _progressValue,
+                    labelPosition: ProgressBarLabelPosition.none,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Right Label'),
+                  AppzProgressBar(
+                    percentage: _progressValue,
+                    labelPosition: ProgressBarLabelPosition.right,
+                    
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Bottom Label'),
+                  AppzProgressBar(
+                    percentage: _progressValue,
+                    labelPosition: ProgressBarLabelPosition.bottom,
+                    
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Top Floating Label'),
+                  AppzProgressBar(
+                    percentage: _progressValue,
+                    labelPosition: ProgressBarLabelPosition.topFloating,
+                    
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Bottom Floating Label'),
+                  AppzProgressBar(
+                    percentage: _progressValue,
+                    labelPosition: ProgressBarLabelPosition.bottomFloating,
+                    
+                  ),
+                ],
+              ),
             ),
-
-            // MPIN Input Field
-            const Text('MPIN'),
-            AppzInputField(
-              label: 'Enter MPIN',
-              hintText: '●●●●',
-              fieldType: AppzFieldType.mpin,
-              obscureText: false,
-              mpinLength: 6,
-              validationType: AppzInputValidationType.mandatory,
+            _sectionCard(
+              title: 'Input Fields',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Default'),
+                  AppzInputField(
+                    label: 'Full Name',
+                    hintText: 'Please enter your name here',
+                    controller: _inputController,
+                    fieldType: AppzFieldType.defaultType,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text('Disabled'),
+                  AppzInputField(
+                    label: 'Disabled Name',
+                    hintText: 'This field is disabled',
+                    // controller: _inputController,
+                    fieldType: AppzFieldType.defaultType,
+                    initialFieldState: AppzFieldState.disabled,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text('Mobile Number'),
+                  AppzInputField(
+                    label: 'Mobile Number',
+                    hintText: 'Enter 10-digit number',
+                    fieldType: AppzFieldType.mobile,
+                    validationType: AppzInputValidationType.mandatory,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text('Aadhaar Number'),
+                  AppzInputField(
+                    label: 'Aadhaar Number',
+                    hintText: 'Enter 12-digit Aadhaar number',
+                    fieldType: AppzFieldType.aadhaar,
+                    validationType: AppzInputValidationType.mandatory,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text('MPIN'),
+                  AppzInputField(
+                    label: 'Enter MPIN',
+                    hintText: '●●●●',
+                    fieldType: AppzFieldType.mpin,
+                    obscureText: false,
+                    mpinLength: 6,
+                    validationType: AppzInputValidationType.mandatory,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text('Text Description'),
+                  AppzInputField(
+                    label: 'About You',
+                    hintText: 'Enter a short description...',
+                    fieldType: AppzFieldType.textDescription,
+                  ),
+                ],
+              ),
             ),
-
-            // Text Description Field
-            const Text('Text Description'),
-            AppzInputField(
-              label: 'About You',
-              hintText: 'Enter a short description...',
-              fieldType: AppzFieldType.textDescription,
+            _sectionCard(
+              title: 'File Upload',
+              child: ApzUploadFileWidget(
+                currentStyle: AppzStyleConfig.instance.getStyleForState(AppzFieldState.defaultState),
+                isEnabled: true,
+                labelText: 'Upload Document',
+                hintText: 'Click to upload the document',
+                allowedExtensionsDescription: 'SVG, PNG, JPG or PDF',
+                allowedExtensions: const ['pdf', 'svg', 'png', 'jpg'],
+                onFileSelected: (file) => setState(() => _selectedFile = file),
+                validationType: AppzInputValidationType.mandatory,
+                selectedFile: _selectedFile,
+                maxSizeInKB: 2048,
+              ),
             ),
-
-            const Text('File Upload', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            ApzUploadFileWidget(
-              currentStyle: AppzStyleConfig.instance.getStyleForState(AppzFieldState.defaultState),
-              isEnabled: true,
-              labelText: 'Upload Document',
-              hintText: 'Click to upload the document',
-              allowedExtensionsDescription: 'SVG, PNG, JPG or PDF',
-              allowedExtensions: const ['pdf', 'svg', 'png', 'jpg'],
-              onFileSelected: (file) => setState(() => _selectedFile = file),
-              validationType: AppzInputValidationType.mandatory,
-              selectedFile: _selectedFile,
-              maxSizeInKB: 2048,
+            _sectionCard(
+              title: 'Date Picker',
+              child: ApzDatePickerField(
+                label: 'Select Date',
+                selectedDate: _selectedDate,
+                onDateSelected: (date) => setState(() => _selectedDate = date),
+                isMandatory: true,
+              ),
             ),
-            const SizedBox(height: 24),
-
-            const Text('Dropdown Field', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            AppzDropdownField(
-              label: 'Select Option',
-              items: const ['Option 1', 'Option 2', 'Option 3'],
-              selectedItem: _dropdownController.value,
-              onChanged: (val) => setState(() => _dropdownController.value = val),
-              controller: _dropdownController,
-              isMandatory: true,
+            _sectionCard(
+              title: 'Phone Input with Dropdown',
+              child: ApzPhoneInputWithDropdown(
+                label: 'Phone Number',
+                initialPhoneCode: '91',
+                isMandatory: true,
+                onChanged: (val) => setState(() => _phoneValue = val),
+              ),
             ),
-            const SizedBox(height: 24),
-
-            const Text('Button', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            Row(
-              children: [
-                AppzButton(
-                  label: 'Primary',
-                  appearance: AppzButtonAppearance.primary,
-                  size: AppzButtonSize.large,
-                  onPressed: () {},
-                ),
-                const SizedBox(width: 24),
-                AppzButton(
-                  label: 'Secondary',
-                  appearance: AppzButtonAppearance.secondary,
-                  onPressed: () {},
-                ),
-                const SizedBox(width: 24),
-                AppzButton(
-                  label: 'Disabled',
-                  disabled: true,
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            const Text('Progress Bar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            AppzProgressBar(
-              percentage: 90,
-              labelPosition: ProgressBarLabelPosition.right,
-              //labelText: 'Progress',
-            ),
-            const SizedBox(height: 24),
-
-            
-
-            const Text('Date Picker', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            ApzDatePickerField(
-              label: 'Select Date',
-              selectedDate: _selectedDate,
-              onDateSelected: (date) => setState(() => _selectedDate = date),
-              isMandatory: true,
-            ),
-            const SizedBox(height: 24),
-
-            const Text('Phone Input with Dropdown', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            ApzPhoneInputWithDropdown(
-              label: 'Phone Number',
-              initialPhoneCode: '91',
-              isMandatory: true,
-              onChanged: (val) => setState(() => _phoneValue = val),
-            ),
-            const SizedBox(height: 24),
           ],
         ),
       ),
