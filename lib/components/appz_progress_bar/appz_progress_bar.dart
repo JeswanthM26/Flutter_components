@@ -231,9 +231,19 @@ class _AppzProgressBarState extends State<AppzProgressBar> {
             );
             break;
         }
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: barWidget,
+        // Add extra margin for floating labels to prevent overlap with other content
+        EdgeInsets margin = EdgeInsets.zero;
+        if (widget.labelPosition == ProgressBarLabelPosition.topFloating) {
+          margin = const EdgeInsets.only(top: 24.0);
+        } else if (widget.labelPosition == ProgressBarLabelPosition.bottomFloating) {
+          margin = const EdgeInsets.only(bottom: 24.0);
+        }
+        return Container(
+          margin: margin,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: barWidget,
+          ),
         );
       },
     );
