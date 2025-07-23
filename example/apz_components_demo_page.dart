@@ -4,8 +4,6 @@ import 'package:apz_flutter_components/components/appz_dropdown_field/appz_dropd
 import 'package:apz_flutter_components/components/apz_button/appz_button.dart';
 import 'package:apz_flutter_components/components/appz_progress_bar/appz_progress_bar.dart';
 import 'package:apz_flutter_components/components/apz_file_upload/apz_file_upload.dart';
-import 'package:apz_flutter_components/apz_date_picker_field.dart';
-import 'package:apz_flutter_components/apz_phone_input_with_dropdown.dart';
 import 'package:apz_flutter_components/components/appz_input_field/appz_input_field_enums.dart';
 import 'package:apz_flutter_components/components/appz_input_field/appz_input_field_theme.dart';
 import 'package:apz_flutter_components/components/appz_input_field/appz_input_style_config.dart';
@@ -277,24 +275,6 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
                 validationType: AppzInputValidationType.mandatory,
                 selectedFile: _selectedFile,
                 maxSizeInKB: 2048,
-              ),
-            ),
-            _sectionCard(
-              title: 'Date Picker',
-              child: ApzDatePickerField(
-                label: 'Select Date',
-                selectedDate: _selectedDate,
-                onDateSelected: (date) => setState(() => _selectedDate = date),
-                isMandatory: true,
-              ),
-            ),
-            _sectionCard(
-              title: 'Phone Input with Dropdown',
-              child: ApzPhoneInputWithDropdown(
-                label: 'Phone Number',
-                initialPhoneCode: '91',
-                isMandatory: true,
-                onChanged: (val) => setState(() => _phoneValue = val),
               ),
             ),
           ],
