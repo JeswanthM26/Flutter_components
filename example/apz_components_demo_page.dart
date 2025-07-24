@@ -39,6 +39,13 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
     CategoryItem(id: 'cat2', label: 'Music', iconAsset: 'assets/icons/music.png'),
     CategoryItem(id: 'cat3', label: 'Movies', iconAsset: 'assets/icons/video-play.png'),
     CategoryItem(id: 'cat4', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(id: 'cat5', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(id: 'cat6', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(id: 'cat7', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(id: 'cat8', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(id: 'cat9', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(id: 'cat10', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(id: 'cat11', label: 'Games', iconAsset: 'assets/icons/game.png'), 
   ]);
   final ValueNotifier<String?> _selectedCategoryIdNotifier = ValueNotifier('cat1');
 
