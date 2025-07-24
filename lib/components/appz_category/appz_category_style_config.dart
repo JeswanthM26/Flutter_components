@@ -121,6 +121,22 @@ class AppzCategoryStyleConfig {
     final padding = (json['padding'] ?? 16.0).toDouble();
     final spacing = (json['spacing'] ?? 8.0).toDouble();
 
+    // Fetch typography details from Input/Medium token
+    final collections = _tokenParser.getValue<List<dynamic>>(['collections']);
+    Map<String, dynamic>? typography;
+    if (collections != null) {
+      final typographyCollection = collections.firstWhere((c) => c['name'] == 'Typography', orElse: () => null);
+      if (typographyCollection != null) {
+        final variables = typographyCollection['modes'][0]['variables'] as List<dynamic>;
+        final token = variables.firstWhere((v) => v['name'] == fontSizeToken, orElse: () => null);
+        if (token != null && token['value'] is Map<String, dynamic>) {
+          typography = token['value'] as Map<String, dynamic>;
+        }
+      }
+    }
+    final resolvedFontFamily = typography != null ? typography['fontFamily'] as String? ?? 'Outfit' : 'Outfit';
+    final resolvedFontWeight = typography != null ? _getFontWeight(typography['fontWeight'] as String? ?? 'Medium') : FontWeight.w500;
+
     return CategoryStateStyle(
       backgroundColor: bg,
       originalBackgroundColor: bg,
@@ -135,11 +151,11 @@ class AppzCategoryStyleConfig {
       padding: padding,
       spacing: spacing,
       itemSpacing: (json['itemSpacing'] ?? 12.0).toDouble(),
-      fontFamily: 'Outfit',
+      fontFamily: resolvedFontFamily,
       textStyle: TextStyle(
         fontSize: fontSize,
-        fontWeight: FontWeight.w500,
-        fontFamily: 'Outfit',
+        fontWeight: resolvedFontWeight,
+        fontFamily: resolvedFontFamily,
         color: labelColor,
       ),
       boxShadowHorizontal: resolveBoxShadowList(json['boxShadowHorizontal']),
@@ -202,3 +218,18 @@ class CategoryStateStyle {
 
 Color _parseColor(String hex) =>
     Color(int.parse(hex.replaceFirst('#', '0xff')));
+
+FontWeight _getFontWeight(String fontWeight) {
+  switch (fontWeight.toLowerCase()) {
+    case 'regular':
+      return FontWeight.w400;
+    case 'medium':
+      return FontWeight.w500;
+    case 'semibold':
+      return FontWeight.w600;
+    case 'bold':
+      return FontWeight.w700;
+    default:
+      return FontWeight.normal;
+  }
+}
