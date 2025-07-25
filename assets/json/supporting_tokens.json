@@ -31,7 +31,8 @@
     "borderRadius": 8
   },
   "inputField": {
-    "borderRadius": 8,
+    "borderRadius": 12,
+    "height": 44,
     "padding": {
       "horizontal": 16,
       "vertical": 12
