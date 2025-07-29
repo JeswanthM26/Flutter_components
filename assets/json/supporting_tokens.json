@@ -215,6 +215,21 @@
       "noSupportingPaddingHorizontal": 12,
       "noSupportingPaddingVertical": 8
     }
+  },
+  "categoryList": {
+    "default": {
+      "borderRadius": 16.0,
+      "cardHeight": 64.0,
+      "padding": 16.0,
+      "iconSize": 40.0,
+      "dividerHeight": 1.0,
+      "boxShadow": [
+        {
+          "color": "#1F000000",
+          "blurRadius": 2
+        }
+      ]
+    }
   }
  
 }
