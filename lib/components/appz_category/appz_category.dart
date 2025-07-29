@@ -4,6 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'appz_category_style_config.dart';
 import 'model/category_model.dart';
 
+// Custom ScrollBehavior to remove scrollbars
+class NoScrollbarBehavior extends ScrollBehavior {
+  @override
+  Widget buildScrollbar(BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}
+
 class AppzCategory extends StatefulWidget {
   final ValueNotifier<List<CategoryItem>> itemsNotifier;
   final Axis direction;
@@ -55,10 +63,13 @@ class _AppzCategoryState extends State<AppzCategory> {
                 constraints: BoxConstraints(
                   maxHeight: constraints.maxHeight,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _buildItems(items),
+                child: ScrollConfiguration(
+                  behavior: NoScrollbarBehavior(),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: _buildItems(items),
+                    ),
                   ),
                 ),
               );
@@ -76,9 +87,19 @@ class _AppzCategoryState extends State<AppzCategory> {
       final style = styleCfg.defaultStyle;
 
       // Use hover background color for selected or hovered (if not selected)
-      final backgroundColor = (isSelected || (isHovered && !isSelected))
-          ? style.hoverBackgroundColor ?? style.backgroundColor
-          : style.backgroundColor;
+      Color backgroundColor;
+      if (widget.direction == Axis.vertical) {
+        if (isSelected || isHovered) {
+          backgroundColor = style.backgroundColor;
+        } else {
+          backgroundColor = style.hoverBackgroundColor ?? style.backgroundColor;
+        }
+      } else {
+        // Existing logic for horizontal
+        backgroundColor = (isSelected || (isHovered && !isSelected))
+            ? style.hoverBackgroundColor ?? style.backgroundColor
+            : style.backgroundColor;
+      }
 
       final child = Container(
         height: style.cardHeight,
