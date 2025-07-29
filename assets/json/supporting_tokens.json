@@ -216,6 +216,31 @@
       "noSupportingPaddingVertical": 8
     }
   },
+    "image": {
+    "circular": {
+      "width": 40.0,
+      "height": 40.0,
+      "cornerRadius": 40.0
+    },
+    "square": {
+      "width": 40.0,
+      "height": 40.0,
+      "cornerRadius": 0.0
+    },
+    "rectangle": {
+      "width": 206.1,
+      "height": 99.82,
+      "cornerRadius": 0.0
+    }
+  },
+  "icon": {
+    "square": {
+      "width": 24.0,
+      "height": 24.0,
+      "cornerRadius": 0.0,
+      "padding": 2.0
+    }
+  },
   "categoryList": {
     "default": {
       "borderRadius": 16.0,
