@@ -255,6 +255,13 @@
         }
       ]
     }
+  },
+   "loader": {
+    "sizes": {
+      "labelFontSize": 14,
+      "defaultHeight": 150,
+      "defaultWidth": 150
+    }
   }
  
 }
