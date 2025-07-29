@@ -69,13 +69,14 @@ class _AppzCategoryExamplePageState extends State<AppzCategoryExamplePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // AppzCategory(
-              //   itemsNotifier: _categoryItemsNotifier,
-              //   selectedIdNotifier: _selectedCategoryIdNotifier,
-              //   direction: Axis.horizontal,
-              //   onItemTap: (item) =>
-              //       setState(() => _selectedCategoryIdNotifier.value = item.id),
-              // ),
+              AppzCategory(
+                itemsNotifier: _categoryItemsNotifier,
+                selectedIdNotifier: _selectedCategoryIdNotifier,
+                direction: Axis.horizontal,
+                edgePadding: 8.0,
+                onItemTap: (item) =>
+                    setState(() => _selectedCategoryIdNotifier.value = item.id),
+              ),
               const SizedBox(height: 32),
               AppzCategory(
                 itemsNotifier: _categoryItemsNotifier,
