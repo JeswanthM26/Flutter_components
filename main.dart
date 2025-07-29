@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:apz_flutter_components/components/appz_dropdown_field/dropdown_style_config.dart';
 import 'package:apz_flutter_components/components/appz_input_field/appz_input_style_config.dart';
 import 'package:apz_flutter_components/components/appz_category/appz_category_style_config.dart';
+import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
 import 'example/apz_components_demo_page.dart';
 import 'example/appz_category_example.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AppzCategoryListExample(),
+      home: const AppzImageExamplePage(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
