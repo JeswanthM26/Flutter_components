@@ -278,6 +278,51 @@
     "borderRadius": 30.0,
     "borderWeight": 1.0,
     "itemSpacing": 4.0
+  },
+   "loader": {
+    "sizes": {
+      "labelFontSize": 14,
+      "defaultHeight": 150,
+      "defaultWidth": 150
+    }
+  },
+  "chips": {
+    "borderRadius": 28.0,
+    "padding": {
+      "top": 11.0,
+      "bottom": 11.0,
+      "left": 16.0,
+      "right": 16.0
+    },
+    "categorySpacing": 4.0,
+    "shadow": "Shadow/sm",
+    "icon": {
+      "asset": "assets/icons/close-1.svg"
+    }
+  },
+  "progressStep": {
+    "circleSize": 24.0,
+    "iconSize": 12.0,
+    "borderWidth": 1.5,
+    "borderRadius": 999.0,
+    "stepSpacing": 12.0,
+    "verticalSpacing": 4.0,
+    "connectorLineWidth": 1.5,
+    "connectorLineHeight": 24.0,
+    "icons": {
+      "completed": "assets/icons/passed.svg",
+      "current": "assets/icons/current.svg",
+      "next": "assets/icons/next_step.svg",
+      "nextdashed": "assets/icons/next_dashed.svg",
+      "lineEnabled": "assets/icons/line_enabled.svg",
+      "lineDisabled": "assets/icons/line_disabled.svg"
+    },
+    "steps": [
+      "Personal info",
+      "Account info",
+      "Review",
+      "Confirmation"
+    ]
   }
  
 }
