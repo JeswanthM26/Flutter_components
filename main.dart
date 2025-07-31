@@ -1,9 +1,12 @@
+import 'package:apz_flutter_components/components/appz_badges/appz_badges_style_config.dart';
+import 'package:apz_flutter_components/components/appz_text/appz_text_style_config.dart';
 import 'package:apz_flutter_components/components/apz_button/button_style_config.dart';
 import 'package:apz_flutter_components/components/appz_progress_bar/progress_bar_style_config.dart';
 import 'package:flutter/material.dart';
 import 'package:apz_flutter_components/components/appz_dropdown_field/dropdown_style_config.dart';
 import 'package:apz_flutter_components/components/appz_input_field/appz_input_style_config.dart';
 import 'package:apz_flutter_components/components/appz_category/appz_category_style_config.dart';
+import 'example/appz_badges_example.dart';
 import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
 import 'example/apz_components_demo_page.dart';
@@ -26,6 +29,8 @@ Future<void> main() async {
   await RadioStyleConfig.instance.load();
   await ToggleStyleConfig.instance.load();
   await ToggleWithLabelStyleConfig.instance.load();
+  await AppzBadgesStyleConfig.instance.load();
+  await AppzTextStyleConfig.instance.load();
 
   runApp(const MyApp());
 }
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AppzImageExamplePage(),
+      home: const AppzBadgesExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
