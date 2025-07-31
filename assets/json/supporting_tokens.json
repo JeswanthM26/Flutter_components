@@ -334,6 +334,17 @@
       "spacing": 10.0,
       "width": 219.0
     }
+  },
+      "tags": {
+    "sizes": {
+      "height": 26,
+      "paddingHorizontal": 12,
+      "paddingVertical": 4,
+      "roundedBorderRadius": 24,
+      "rectangleBorderRadius": 8,
+      "iconSize": 19.2,
+      "iconSpacing": 4
+    }
   }
- 
+
 }
