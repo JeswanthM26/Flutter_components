@@ -2,6 +2,7 @@ import 'package:apz_flutter_components/components/appz_badges/appz_badges_style_
 import 'package:apz_flutter_components/components/appz_text/appz_text_style_config.dart';
 import 'package:apz_flutter_components/components/apz_button/button_style_config.dart';
 import 'package:apz_flutter_components/components/appz_progress_bar/progress_bar_style_config.dart';
+import 'package:apz_flutter_components/components/apz_list_content/apz_list_content_style_config.dart';
 import 'package:flutter/material.dart';
 import 'package:apz_flutter_components/components/appz_dropdown_field/dropdown_style_config.dart';
 import 'package:apz_flutter_components/components/appz_input_field/appz_input_style_config.dart';
@@ -15,6 +16,8 @@ import 'package:apz_flutter_components/components/appz_checkbox/checkbox_style_c
 import 'package:apz_flutter_components/components/appz_radio/radio_style_config.dart';
 import 'package:apz_flutter_components/components/appz_toggle/toggle_style_config.dart';
 import 'package:apz_flutter_components/components/appz_toggle_with_label/toggle_with_label_style_config.dart';
+
+import 'example/apz_list_content_example.dart';
 
 Future<void> main() async {
   // Ensure that widget binding is initialized before calling native code.
@@ -31,6 +34,7 @@ Future<void> main() async {
   await ToggleWithLabelStyleConfig.instance.load();
   await AppzBadgesStyleConfig.instance.load();
   await AppzTextStyleConfig.instance.load();
+  await ApzListContentStyleConfig.instance.load();
 
   runApp(const MyApp());
 }
@@ -45,7 +49,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AppzBadgesExample(),
+      home: const ApzListContentExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
