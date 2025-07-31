@@ -256,6 +256,29 @@
       ]
     }
   },
+  "badges": {
+    "small": {
+      "height": 25.0,
+      "padding": {
+        "top": 6.0,
+        "bottom": 6.0,
+        "left": 12.0,
+        "right": 12.0
+      }
+    },
+    "large": {
+      "height": 32.0,
+      "padding": {
+        "top": 8.0,
+        "bottom": 8.0,
+        "left": 16.0,
+        "right": 16.0
+      }
+    },
+    "borderRadius": 30.0,
+    "borderWeight": 1.0,
+    "itemSpacing": 4.0
+  },
    "loader": {
     "sizes": {
       "labelFontSize": 14,
