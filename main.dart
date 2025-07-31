@@ -1,3 +1,4 @@
+import 'package:apz_flutter_components/components/appz_alert/alert_style_config.dart';
 import 'package:apz_flutter_components/components/appz_badges/appz_badges_style_config.dart';
 import 'package:apz_flutter_components/components/appz_text/appz_text_style_config.dart';
 import 'package:apz_flutter_components/components/apz_button/button_style_config.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:apz_flutter_components/components/appz_dropdown_field/dropdown_style_config.dart';
 import 'package:apz_flutter_components/components/appz_input_field/appz_input_style_config.dart';
 import 'package:apz_flutter_components/components/appz_category/appz_category_style_config.dart';
+import 'example/appz_alert_example.dart';
 import 'example/appz_badges_example.dart';
 import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
@@ -23,6 +25,7 @@ Future<void> main() async {
   // Ensure that widget binding is initialized before calling native code.
   WidgetsFlutterBinding.ensureInitialized();
 
+  await AlertStyleConfig.instance.load();
   await DropdownStyleConfig.instance.load();
   await AppzStyleConfig.instance.load();
   await ProgressBarStyleConfig.instance.load();
@@ -35,6 +38,7 @@ Future<void> main() async {
   await AppzBadgesStyleConfig.instance.load();
   await AppzTextStyleConfig.instance.load();
   await ApzListContentStyleConfig.instance.load();
+  
 
   runApp(const MyApp());
 }
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const ApzListContentExample(),
+      home: const AppzAlertExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
