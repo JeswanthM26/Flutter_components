@@ -323,6 +323,17 @@
       "Review",
       "Confirmation"
     ]
+  },
+  "listContent": {
+    "sideBySide": {
+      "spacing": 24.0,
+      "totalWidth": 311.0,
+      "labelWidth": 103.0
+    },
+    "twoLine": {
+      "spacing": 10.0,
+      "width": 219.0
+    }
   }
  
 }
