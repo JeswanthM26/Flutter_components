@@ -345,6 +345,41 @@
       "iconSize": 19.2,
       "iconSpacing": 4
     }
+  },
+    "alert": {
+    "sizes": {
+      "width": 343,
+      "borderRadius": 16,
+      "headerHeight": 56,
+      "headerPaddingHorizontal": 24,
+      "headerPaddingVertical": 16,
+      "contentPadding": 16,
+      "buttonContainerPadding": 16,
+      "iconContainerSize": 56,
+      "iconSize": 24,
+      "iconSpacing": 16,
+      "buttonSpacing": 16,
+      "closeIconSize": 24,
+      "borderWidth": 1,
+      "iconBorderRadius": 999
+    },
+
+    "icons": {
+      "success": "assets/icons/check.svg",
+      "warning": "assets/icons/circum_warning.svg",
+      "error": "assets/icons/close-circle-1.svg",
+      "info": "assets/icons/Question mark.svg",
+      "close": "assets/icons/close-circle-1.svg"
+    },
+    "boxShadow": [
+      {
+        "color": "#28000000",
+        "blurRadius": 16,
+        "offsetX": 0,
+        "offsetY": 8,
+        "spreadRadius": 0
+      }
+    ]
   }
 
 }
