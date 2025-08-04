@@ -10,6 +10,7 @@ import 'package:apz_flutter_components/components/appz_input_field/appz_input_st
 import 'package:apz_flutter_components/components/appz_category/appz_category_style_config.dart';
 import 'example/appz_alert_example.dart';
 import 'example/appz_badges_example.dart';
+import 'example/appz_footer_example.dart';
 import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
 import 'example/apz_components_demo_page.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AppzAlertExample(),
+      home: const AppzFooterExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }

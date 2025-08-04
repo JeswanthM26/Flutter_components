@@ -50,7 +50,7 @@ class AppzAlertExample extends StatelessWidget {
               type: AppzAlertType.warning,
               title: 'Unsaved Changes',
               description: 'You have unsaved changes. Do you want to continue?',
-              headerIconPath: 'assets/icons/close-circle-2.svg',
+              headerIconPath: 'assets/icons/close-circle-1.svg',
               primaryButtonText: 'Save',
               secondaryButtonText: 'Discard',
               onPrimaryButtonTap: () {
@@ -125,8 +125,8 @@ class AppzAlertExample extends StatelessWidget {
             AppzAlert(
               type: AppzAlertType.warning,
               title: 'Custom Header Icon',
-              description: 'This alert uses a custom header icon (close-circle-2.svg).',
-              headerIconPath: 'assets/icons/close-circle-2.svg',
+              description: 'This alert uses a custom header icon (close-circle-1.svg).',
+              headerIconPath: 'assets/icons/close-circle-1.svg',
               primaryButtonText: 'OK',
               onPrimaryButtonTap: () {
                 // Handle OK

@@ -380,6 +380,16 @@
         "spreadRadius": 0
       }
     ]
+  },
+     "footer": {
+    "sizes": {
+      "width": 375,
+      "padding": 20,
+      "borderRadius": 5,
+      "borderWidth": 1,
+      "buttonContainerPadding": 24,
+      "buttonSpacing": 24
+    }
   }
 
 }

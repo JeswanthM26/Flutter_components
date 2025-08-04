@@ -17,7 +17,7 @@ enum AppzAlertVariant {
   withoutIcon,
 }
 
-class AppzAlert extends StatelessWidget {
+class AppzAlert extends StatefulWidget {
   final String title;
   final String description;
   final AppzAlertType type;
@@ -45,9 +45,27 @@ class AppzAlert extends StatelessWidget {
     this.onHeaderIconTap,
   }) : super(key: key);
 
+  @override
+  State<AppzAlert> createState() => _AppzAlertState();
+}
+
+class _AppzAlertState extends State<AppzAlert> {
+  bool _configLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadConfig();
+  }
+
+  Future<void> _loadConfig() async {
+    await AlertStyleConfig.instance.load();
+    if (mounted) setState(() => _configLoaded = true);
+  }
+
   String _getDefaultIconPath() {
     final config = AlertStyleConfig.instance;
-    switch (type) {
+    switch (widget.type) {
       case AppzAlertType.success:
         return config.getSuccessIconPath();
       case AppzAlertType.warning:
@@ -60,12 +78,12 @@ class AppzAlert extends StatelessWidget {
   }
 
   String _getHeaderIconPath() {
-    return headerIconPath ?? AlertStyleConfig.instance.getCloseIconPath();
+    return widget.headerIconPath ?? AlertStyleConfig.instance.getCloseIconPath();
   }
 
   Widget _buildDefaultIcon(double size) {
     final config = AlertStyleConfig.instance;
-    final defaultIconPath = iconPath ?? _getDefaultIconPath();
+    final defaultIconPath = widget.iconPath ?? _getDefaultIconPath();
     
     return SvgPicture.asset(
       defaultIconPath,
@@ -80,7 +98,7 @@ class AppzAlert extends StatelessWidget {
 
   Color _getIconBackgroundColor() {
     final config = AlertStyleConfig.instance;
-    switch (type) {
+    switch (widget.type) {
       case AppzAlertType.success:
         return config.getSuccessIconBackgroundColor();
       case AppzAlertType.warning:
@@ -94,6 +112,10 @@ class AppzAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!_configLoaded) {
+      return const SizedBox.shrink();
+    }
+
     final config = AlertStyleConfig.instance;
     final boxShadows = config.boxShadow != null
         ? config.boxShadow!.map<BoxShadow>((shadow) {
@@ -150,7 +172,7 @@ class AppzAlert extends StatelessWidget {
               children: [
                 Expanded(
                   child: AppzText(
-                    title,
+                    widget.title,
                     category: 'heading',
                     fontWeight: 'bold',
                     color: config.getTitleColor(),
@@ -160,7 +182,7 @@ class AppzAlert extends StatelessWidget {
                   width: config.size('closeIconSize'),
                   height: config.size('closeIconSize'),
                   child: GestureDetector(
-                    onTap: onHeaderIconTap,
+                    onTap: widget.onHeaderIconTap,
                     child: AppzImage(
                       assetName: _getHeaderIconPath(),
                       size: AppzImageSize.square(size: config.size('closeIconSize')),
@@ -179,7 +201,7 @@ class AppzAlert extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (variant == AppzAlertVariant.withIcon) ...[
+                if (widget.variant == AppzAlertVariant.withIcon) ...[
                   Container(
                     width: config.size('iconContainerSize'),
                     height: config.size('iconContainerSize'),
@@ -195,7 +217,7 @@ class AppzAlert extends StatelessWidget {
                 ],
                 Expanded(
                   child: AppzText(
-                    description,
+                    widget.description,
                     category: 'paragraph',
                     fontWeight: 'regular',
                     color: config.getDescriptionColor(),
@@ -204,36 +226,38 @@ class AppzAlert extends StatelessWidget {
               ],
             ),
           ),
-          // Buttons section
-          if (primaryButtonText != null || secondaryButtonText != null)
+          // Button section
+          if (widget.primaryButtonText != null || widget.secondaryButtonText != null)
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(config.size('buttonContainerPadding')),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (secondaryButtonText != null) ...[
+                  if (widget.primaryButtonText != null) ...[
                     Expanded(
                       child: AppzButton(
-                        label: secondaryButtonText!,
-                        appearance: AppzButtonAppearance.secondary,
-                        size: AppzButtonSize.medium,
-                        onPressed: onSecondaryButtonTap,
-                      ),
-                    ),
-                    SizedBox(width: config.size('buttonSpacing')),
-                  ],
-                  if (primaryButtonText != null)
-                    Expanded(
-                      child: AppzButton(
-                        label: primaryButtonText!,
+                        label: widget.primaryButtonText!,
                         appearance: AppzButtonAppearance.primary,
                         size: AppzButtonSize.medium,
-                        onPressed: onPrimaryButtonTap,
+                        onPressed: widget.onPrimaryButtonTap,
                       ),
                     ),
+                    if (widget.secondaryButtonText != null)
+                      SizedBox(width: config.size('buttonSpacing')),
+                  ],
+                  if (widget.secondaryButtonText != null) ...[
+                    Expanded(
+                      child: AppzButton(
+                        label: widget.secondaryButtonText!,
+                        appearance: AppzButtonAppearance.secondary,
+                        size: AppzButtonSize.medium,
+                        onPressed: widget.onSecondaryButtonTap,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
