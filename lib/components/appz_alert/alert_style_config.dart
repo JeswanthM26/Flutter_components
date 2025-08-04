@@ -6,6 +6,7 @@ class AlertStyleConfig extends ChangeNotifier {
   Map<String, dynamic>? _config;
   final TokenParser _tokenParser = TokenParser();
   bool _useMaterialTheme = true;
+  bool _isLoaded = false;
 
   AlertStyleConfig._internal();
 
@@ -17,20 +18,30 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   Future<void> load() async {
-    await _tokenParser.loadTokens();
-    final supportingConfig = _tokenParser.getValue<Map<String, dynamic>>(['alert'], fromSupportingTokens: true);
-    _config = supportingConfig;
-    notifyListeners();
+    try {
+      await _tokenParser.loadTokens();
+      final supportingConfig = _tokenParser.getValue<Map<String, dynamic>>(['alert'], fromSupportingTokens: true);
+      _config = supportingConfig;
+      _isLoaded = true;
+      notifyListeners();
+    } catch (e) {
+      _isLoaded = false;
+    }
   }
 
   Future<void> reload(String path) async {
-    await _tokenParser.loadTokens();
-    final supportingConfig = _tokenParser.getValue<Map<String, dynamic>>(['alert'], fromSupportingTokens: true);
-    _config = supportingConfig;
-    notifyListeners();
+    try {
+      await _tokenParser.loadTokens();
+      final supportingConfig = _tokenParser.getValue<Map<String, dynamic>>(['alert'], fromSupportingTokens: true);
+      _config = supportingConfig;
+      _isLoaded = true;
+      notifyListeners();
+    } catch (e) {
+      _isLoaded = false;
+    }
   }
 
-  bool get isInitialized => _config != null;
+  bool get isInitialized => _config != null && _isLoaded;
 
   Color color(String key) {
     if (_useMaterialTheme) {
@@ -67,7 +78,7 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   Map<String, double> get sizes {
-    if (_config == null) {
+    if (_config == null || !_isLoaded) {
       throw Exception('AlertStyleConfig not initialized. Call load() first.');
     }
     final sizesMap = _config!['sizes'] as Map<String, dynamic>;
@@ -75,15 +86,19 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   double size(String key) {
-    final sizesMap = sizes;
+    if (_config == null || !_isLoaded) {
+      throw Exception('AlertStyleConfig not initialized. Call load() first.');
+    }
+    final sizesMap = _config!['sizes'] as Map<String, dynamic>;
     if (!sizesMap.containsKey(key)) {
       throw Exception('AlertStyleConfig: size key "$key" not found in config.');
     }
-    return sizesMap[key]!;
+    final value = sizesMap[key];
+    return value is num ? value.toDouble() : double.tryParse(value.toString()) ?? 0;
   }
 
   List<dynamic>? get boxShadow {
-    if (_config == null) {
+    if (_config == null || !_isLoaded) {
       throw Exception('AlertStyleConfig not initialized. Call load() first.');
     }
     return _config!['boxShadow'] as List<dynamic>?;
@@ -133,7 +148,6 @@ class AlertStyleConfig extends ChangeNotifier {
     final collections = _tokenParser.getValue<List<dynamic>>(['collections']);
     if (collections == null) return Colors.transparent;
 
-    // First try to find the token directly in the Primitive collection
     final primitiveCollection = collections.firstWhere((c) => c['name'] == 'Primitive', orElse: () => null);
     if (primitiveCollection != null) {
       final primitiveVariables = primitiveCollection['modes'][0]['variables'] as List<dynamic>;
@@ -144,7 +158,6 @@ class AlertStyleConfig extends ChangeNotifier {
       }
     }
 
-    // If not found in Primitive, try the Tokens collection (for aliases)
     final tokenCollection = collections.firstWhere((c) => c['name'] == 'Tokens', orElse: () => null);
     if (tokenCollection == null) return Colors.transparent;
 
@@ -172,7 +185,7 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   String getSuccessIconPath() {
-    if (_config == null) {
+    if (_config == null || !_isLoaded) {
       throw Exception('AlertStyleConfig not initialized. Call load() first.');
     }
     final iconsMap = _config!['icons'] as Map<String, dynamic>;
@@ -180,7 +193,7 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   String getWarningIconPath() {
-    if (_config == null) {
+    if (_config == null || !_isLoaded) {
       throw Exception('AlertStyleConfig not initialized. Call load() first.');
     }
     final iconsMap = _config!['icons'] as Map<String, dynamic>;
@@ -188,7 +201,7 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   String getErrorIconPath() {
-    if (_config == null) {
+    if (_config == null || !_isLoaded) {
       throw Exception('AlertStyleConfig not initialized. Call load() first.');
     }
     final iconsMap = _config!['icons'] as Map<String, dynamic>;
@@ -196,7 +209,7 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   String getInfoIconPath() {
-    if (_config == null) {
+    if (_config == null || !_isLoaded) {
       throw Exception('AlertStyleConfig not initialized. Call load() first.');
     }
     final iconsMap = _config!['icons'] as Map<String, dynamic>;
@@ -204,7 +217,7 @@ class AlertStyleConfig extends ChangeNotifier {
   }
 
   String getCloseIconPath() {
-    if (_config == null) {
+    if (_config == null || !_isLoaded) {
       throw Exception('AlertStyleConfig not initialized. Call load() first.');
     }
     final iconsMap = _config!['icons'] as Map<String, dynamic>;
