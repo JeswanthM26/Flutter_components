@@ -16,8 +16,10 @@ import 'package:apz_flutter_components/components/appz_checkbox/checkbox_style_c
 import 'package:apz_flutter_components/components/appz_radio/radio_style_config.dart';
 import 'package:apz_flutter_components/components/appz_toggle/toggle_style_config.dart';
 import 'package:apz_flutter_components/components/appz_toggle_with_label/toggle_with_label_style_config.dart';
+import 'package:apz_flutter_components/components/apz_menu/apz_menu_style_config.dart';
 
 import 'example/apz_list_content_example.dart';
+import 'example/apz_menu_example.dart';
 
 Future<void> main() async {
   // Ensure that widget binding is initialized before calling native code.
@@ -35,6 +37,7 @@ Future<void> main() async {
   await AppzBadgesStyleConfig.instance.load();
   await AppzTextStyleConfig.instance.load();
   await ApzListContentStyleConfig.instance.load();
+  await ApzMenuStyleConfig.instance.load();
 
   runApp(const MyApp());
 }
@@ -49,7 +52,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const ApzListContentExample(),
+      home: const ApzMenuExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
