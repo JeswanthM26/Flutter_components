@@ -1,5 +1,6 @@
 import 'package:apz_flutter_components/components/appz_alert/alert_style_config.dart';
 import 'package:apz_flutter_components/components/appz_badges/appz_badges_style_config.dart';
+import 'package:apz_flutter_components/components/appz_modal_header/appz_modal_header_style_config.dart';
 import 'package:apz_flutter_components/components/appz_text/appz_text_style_config.dart';
 import 'package:apz_flutter_components/components/apz_button/button_style_config.dart';
 import 'package:apz_flutter_components/components/appz_progress_bar/progress_bar_style_config.dart';
@@ -13,6 +14,7 @@ import 'example/appz_badges_example.dart';
 import 'example/appz_footer_example.dart';
 import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
+import 'example/appz_modal_header_example.dart';
 import 'example/apz_components_demo_page.dart';
 import 'example/appz_category_example.dart';
 import 'package:apz_flutter_components/components/appz_checkbox/checkbox_style_config.dart';
@@ -44,6 +46,7 @@ Future<void> main() async {
   await AppzTextStyleConfig.instance.load();
   await ApzListContentStyleConfig.instance.load();
   await ApzMenuStyleConfig.instance.load();
+  await AppzModalHeaderStyleConfig.instance.load();
 
   runApp(const MyApp());
 }
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const ApzMenuExample(),
+      home: const AppzModalHeaderExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
