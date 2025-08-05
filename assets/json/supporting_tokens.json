@@ -419,6 +419,22 @@
       "buttonContainerPadding": 24,
       "buttonSpacing": 24
     }
+  },
+   "modalHeader": {
+    "width": 343.0,
+    "padding": {
+      "horizontal": 24.0,
+      "vertical": 16.0
+    },
+    "borderRadius": {
+      "topLeft": 16.0,
+      "topRight": 16.0
+    },
+    "borderWidth": 1.0,
+    "spacing": 4.0,
+    "closeButton": {
+      "iconSize": 24.0
+    }
   }
 
 }
