@@ -19,6 +19,7 @@ import 'package:apz_flutter_components/components/appz_radio/appz_radio.dart';
 import 'package:apz_flutter_components/components/appz_toggle/appz_toggle.dart';
 import 'package:apz_flutter_components/components/appz_toggle_with_label/appz_toggle_with_label.dart';
 import 'package:apz_flutter_components/components/appz_checkbox/appz_checkbox.dart';
+
 class ApzComponentsDemoPage extends StatefulWidget {
   const ApzComponentsDemoPage({super.key});
 
@@ -35,26 +36,39 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
   DateTime? _selectedDate;
   // ignore: unused_field
   String? _phoneValue;
-   bool _checkboxValue = false;
+  bool _checkboxValue = false;
   bool _radioValue = false;
   bool _toggleValue = false;
   bool _toggleWithLabelValue = false;
 
   // Category demo state
-  final ValueNotifier<List<CategoryItem>> _categoryItemsNotifier = ValueNotifier([
-    CategoryItem(id: 'cat1', label: 'Books', iconAsset: 'assets/icons/book.png'),
-    CategoryItem(id: 'cat2', label: 'Music', iconAsset: 'assets/icons/music.png'),
-    CategoryItem(id: 'cat3', label: 'Movies', iconAsset: 'assets/icons/video-play.png'),
-    CategoryItem(id: 'cat4', label: 'Games', iconAsset: 'assets/icons/game.png'),
-    CategoryItem(id: 'cat5', label: 'Games', iconAsset: 'assets/icons/game.png'),
-    CategoryItem(id: 'cat6', label: 'Games', iconAsset: 'assets/icons/game.png'),
-    CategoryItem(id: 'cat7', label: 'Games', iconAsset: 'assets/icons/game.png'),
-    CategoryItem(id: 'cat8', label: 'Games', iconAsset: 'assets/icons/game.png'),
-    CategoryItem(id: 'cat9', label: 'Games', iconAsset: 'assets/icons/game.png'),
-    CategoryItem(id: 'cat10', label: 'Games', iconAsset: 'assets/icons/game.png'),
-    CategoryItem(id: 'cat11', label: 'Games', iconAsset: 'assets/icons/game.png'), 
+  final ValueNotifier<List<CategoryItem>> _categoryItemsNotifier =
+      ValueNotifier([
+    CategoryItem(
+        id: 'cat1', label: 'Books', iconAsset: 'assets/icons/book.png'),
+    CategoryItem(
+        id: 'cat2', label: 'Music', iconAsset: 'assets/icons/music.png'),
+    CategoryItem(
+        id: 'cat3', label: 'Movies', iconAsset: 'assets/icons/video-play.png'),
+    CategoryItem(
+        id: 'cat4', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(
+        id: 'cat5', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(
+        id: 'cat6', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(
+        id: 'cat7', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(
+        id: 'cat8', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(
+        id: 'cat9', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(
+        id: 'cat10', label: 'Games', iconAsset: 'assets/icons/game.png'),
+    CategoryItem(
+        id: 'cat11', label: 'Games', iconAsset: 'assets/icons/game.png'),
   ]);
-  final ValueNotifier<String?> _selectedCategoryIdNotifier = ValueNotifier('cat1');
+  final ValueNotifier<String?> _selectedCategoryIdNotifier =
+      ValueNotifier('cat1');
 
   // Progress bar demo state
   double _progressValue = 65;
@@ -103,7 +117,9 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            Text(title,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             const SizedBox(height: 12),
             child,
           ],
@@ -137,7 +153,8 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
                 itemsNotifier: _categoryItemsNotifier,
                 selectedIdNotifier: _selectedCategoryIdNotifier,
                 direction: Axis.horizontal,
-                onItemTap: (item) => setState(() => _selectedCategoryIdNotifier.value = item.id),
+                onItemTap: (item) =>
+                    setState(() => _selectedCategoryIdNotifier.value = item.id),
               ),
             ),
             _sectionCard(
@@ -146,7 +163,8 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
                 itemsNotifier: _categoryItemsNotifier,
                 selectedIdNotifier: _selectedCategoryIdNotifier,
                 direction: Axis.vertical,
-                onItemTap: (item) => setState(() => _selectedCategoryIdNotifier.value = item.id),
+                onItemTap: (item) =>
+                    setState(() => _selectedCategoryIdNotifier.value = item.id),
               ),
             ),
             _sectionCard(
@@ -155,7 +173,8 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
                 label: 'Select Option',
                 items: const ['Option 1', 'Option 2', 'Option 3'],
                 selectedItem: _dropdownController.value,
-                onChanged: (val) => setState(() => _dropdownController.value = val),
+                onChanged: (val) =>
+                    setState(() => _dropdownController.value = val),
                 controller: _dropdownController,
                 isMandatory: true,
               ),
@@ -173,7 +192,8 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
                         onPressed: () => _changeProgress(-10),
                       ),
                       const SizedBox(width: 16),
-                      Text('${_progressValue.toInt()}%', style: const TextStyle(fontSize: 18)),
+                      Text('${_progressValue.toInt()}%',
+                          style: const TextStyle(fontSize: 18)),
                       const SizedBox(width: 16),
                       AppzButton(
                         label: '+',
@@ -193,28 +213,24 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
                   AppzProgressBar(
                     percentage: _progressValue,
                     labelPosition: ProgressBarLabelPosition.right,
-                    
                   ),
                   const SizedBox(height: 16),
                   const Text('Bottom Label'),
                   AppzProgressBar(
                     percentage: _progressValue,
                     labelPosition: ProgressBarLabelPosition.bottom,
-                    
                   ),
                   const SizedBox(height: 16),
                   const Text('Top Floating Label'),
                   AppzProgressBar(
                     percentage: _progressValue,
                     labelPosition: ProgressBarLabelPosition.topFloating,
-                    
                   ),
                   const SizedBox(height: 16),
                   const Text('Bottom Floating Label'),
                   AppzProgressBar(
                     percentage: _progressValue,
                     labelPosition: ProgressBarLabelPosition.bottomFloating,
-                    
                   ),
                 ],
               ),
@@ -279,7 +295,8 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
             _sectionCard(
               title: 'File Upload',
               child: ApzUploadFileWidget(
-                currentStyle: AppzStyleConfig.instance.getStyleForState(AppzFieldState.defaultState),
+                currentStyle: AppzStyleConfig.instance
+                    .getStyleForState(AppzFieldState.defaultState),
                 isEnabled: true,
                 labelText: 'Upload Document',
                 hintText: 'Click to upload the document',
@@ -291,14 +308,14 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
                 maxSizeInKB: 2048,
               ),
             ),
-             _sectionCard(
-              title: 'AppzCheckbox',
-              child: AppzCheckbox(
-                isChecked: _checkboxValue,
-                onChanged: (val) => setState(() => _checkboxValue = val),
-                title: 'Checkbox',
-              ),
-            ),
+            //  _sectionCard(
+            //   title: 'AppzCheckbox',
+            //   child: AppzCheckbox(
+            //     isChecked: _checkboxValue,
+            //     onChanged: (val) => setState(() => _checkboxValue = val),
+            //     title: 'Checkbox',
+            //   ),
+            // ),
             _sectionCard(
               title: 'AppzRadio',
               child: AppzRadio(
@@ -327,4 +344,4 @@ class _ApzComponentsDemoPageState extends State<ApzComponentsDemoPage> {
       ),
     );
   }
-} 
+}
