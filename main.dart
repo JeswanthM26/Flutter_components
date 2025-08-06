@@ -17,7 +17,6 @@ import 'example/appz_footer_example.dart';
 import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
 import 'example/appz_modal_header_example.dart';
-import 'example/apz_components_demo_page.dart';
 import 'example/appz_category_example.dart';
 import 'package:apz_flutter_components/components/appz_radio/radio_style_config.dart';
 import 'package:apz_flutter_components/components/appz_toggle/toggle_style_config.dart';
