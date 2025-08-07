@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../lib/components/appz_checkbox/appz_checkbox.dart';
+import '../lib/components/appz_text/appz_text.dart';
 
 class AppzCheckboxExample extends StatefulWidget {
   const AppzCheckboxExample({super.key});
@@ -12,7 +13,8 @@ class _AppzCheckboxExampleState extends State<AppzCheckboxExample> {
   // Controllers for examples
   final AppzCheckboxController _singleController = AppzCheckboxController();
   final AppzCheckboxController _groupController = AppzCheckboxController();
-  final AppzCheckboxController _groupController2 = AppzCheckboxController(); // Separate controller for second example
+  final AppzCheckboxController _groupController2 =
+      AppzCheckboxController(); // Separate controller for second example
 
   // ValueNotifier for group checkbox example
   final ValueNotifier<List<int>> _groupValueNotifier =
@@ -20,6 +22,12 @@ class _AppzCheckboxExampleState extends State<AppzCheckboxExample> {
 
   // Group items for checkbox examples
   final List<CheckboxItem> _preferencesGroupItems = [
+    CheckboxItem(label: 'Email notifications', value: "yes"),
+    CheckboxItem(label: 'Push notifications', value: "yes"),
+    CheckboxItem(label: 'SMS notifications', value: "no"),
+    CheckboxItem(label: 'Email notifications', value: "yes"),
+    CheckboxItem(label: 'Push notifications', value: "yes"),
+    CheckboxItem(label: 'SMS notifications', value: "no"),
     CheckboxItem(label: 'Email notifications', value: "yes"),
     CheckboxItem(label: 'Push notifications', value: "yes"),
     CheckboxItem(label: 'SMS notifications', value: "no"),
@@ -82,7 +90,7 @@ class _AppzCheckboxExampleState extends State<AppzCheckboxExample> {
             AppzCheckbox(
               value: "yes", // Initial state
               label: 'Single checkbox using value property',
-              subtitle: 'This shows the value property pattern',
+              //subtitle: 'This shows the value property pattern',
             ),
 
             const SizedBox(height: 16),
@@ -104,16 +112,6 @@ class _AppzCheckboxExampleState extends State<AppzCheckboxExample> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 16),
-
-            // Example 1: Using selectedIndicesNotifier
-            AppzCheckbox(
-              label: 'Group with selectedIndicesNotifier',
-              variant: CheckboxVariant.group,
-              selectedIndicesNotifier: _groupValueNotifier,
-              groupItems: _preferencesGroupItems,
-            ),
-
             const SizedBox(height: 16),
 
             // Example 2: Using controller
@@ -158,9 +156,9 @@ class _AppzCheckboxExampleState extends State<AppzCheckboxExample> {
 
             const SizedBox(height: 16),
 
-            // Example 2: Group checkbox with onTap
+            // Example 2: Group checkbox with subtitle only
             AppzCheckbox(
-              label: 'Group checkbox with onTap callback',
+              label: 'This shows the onTap callback pattern',
               variant: CheckboxVariant.group,
               controller: _groupController,
               groupItems: _preferencesGroupItems,
