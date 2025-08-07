@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AppzCheckboxExample(),
+      home: const AppzBadgesExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }

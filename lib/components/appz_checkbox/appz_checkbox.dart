@@ -7,6 +7,7 @@ import '../appz_text/appz_text.dart';
 import '../appz_text/appz_text_style_config.dart';
 
 enum CheckboxAlignment { left, right }
+
 enum CheckboxVariant { single, group }
 
 class CheckboxItem {
@@ -97,7 +98,8 @@ class AppzCheckbox extends StatefulWidget {
   final CheckboxVariant variant;
   final bool enabled;
   final List<CheckboxItem>? groupItems;
-  final ValueNotifier<List<int>>? selectedIndicesNotifier; // For multi selection
+  final ValueNotifier<List<int>>?
+      selectedIndicesNotifier; // For multi selection
   final AppzCheckboxController? controller; // Controller for managing state
   final VoidCallback? onTap; // Callback when checkbox is tapped
 
@@ -115,10 +117,13 @@ class AppzCheckbox extends StatefulWidget {
     this.controller,
     this.onTap,
   }) : assert(
-         (variant == CheckboxVariant.group && (selectedIndicesNotifier != null || controller != null)) || 
-         (variant == CheckboxVariant.single && (valueNotifier != null || value != null || controller != null)),
-         'For single variant: either valueNotifier, value, or controller must be provided. For group variant: either selectedIndicesNotifier or controller must be provided.'
-       );
+            (variant == CheckboxVariant.group &&
+                    (selectedIndicesNotifier != null || controller != null)) ||
+                (variant == CheckboxVariant.single &&
+                    (valueNotifier != null ||
+                        value != null ||
+                        controller != null)),
+            'For single variant: either valueNotifier, value, or controller must be provided. For group variant: either selectedIndicesNotifier or controller must be provided.');
 
   @override
   State<AppzCheckbox> createState() => _AppzCheckboxState();
@@ -126,16 +131,16 @@ class AppzCheckbox extends StatefulWidget {
 
 class _AppzCheckboxState extends State<AppzCheckbox> {
   bool _isLoaded = false;
-  ValueNotifier<String>? _localValueNotifier; // For single checkboxes when only 'value' is provided
+  ValueNotifier<String>?
+      _localValueNotifier; // For single checkboxes when only 'value' is provided
 
   @override
   void initState() {
     super.initState();
     _loadConfigs();
-    
+
     // Initialize selectedIndicesNotifier for group checkboxes
-    if (widget.variant == CheckboxVariant.group && 
-        widget.groupItems != null) {
+    if (widget.variant == CheckboxVariant.group && widget.groupItems != null) {
       if (widget.selectedIndicesNotifier != null) {
         final initialSelectedIndices = <int>[];
         for (int i = 0; i < widget.groupItems!.length; i++) {
@@ -155,67 +160,74 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
         widget.controller!.setSelectedIndices(initialSelectedIndices);
       }
     }
-    
+
     // Initialize local ValueNotifier for single checkboxes when only 'value' is provided
-    if (widget.variant == CheckboxVariant.single && 
-        widget.valueNotifier == null && 
+    if (widget.variant == CheckboxVariant.single &&
+        widget.valueNotifier == null &&
         widget.value != null &&
         widget.controller == null) {
       _localValueNotifier = ValueNotifier<String>(widget.value!);
     }
-    
+
     // Initialize controller if provided
     if (widget.controller != null) {
       widget.controller!.addListener(_onControllerChanged);
     }
   }
 
-     Future<void> _loadConfigs() async {
-     await Future.wait([
-       AppzCheckboxStyleConfig.instance.load(),
-       AppzTextStyleConfig.instance.load(),
-     ]);
-     if (mounted) {
-       setState(() {
-         _isLoaded = true;
-       });
-     }
-   }
+  Future<void> _loadConfigs() async {
+    await Future.wait([
+      AppzCheckboxStyleConfig.instance.load(),
+      AppzTextStyleConfig.instance.load(),
+    ]);
+    if (mounted) {
+      setState(() {
+        _isLoaded = true;
+      });
+    }
+  }
 
-   @override
-   void dispose() {
-     _localValueNotifier?.dispose();
-     if (widget.controller != null) {
-       widget.controller!.removeListener(_onControllerChanged);
-     }
-     super.dispose();
-   }
+  @override
+  void dispose() {
+    _localValueNotifier?.dispose();
+    if (widget.controller != null) {
+      widget.controller!.removeListener(_onControllerChanged);
+    }
+    super.dispose();
+  }
 
-   void _onControllerChanged() {
-     if (mounted) {
-       setState(() {});
-     }
-   }
+  void _onControllerChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     if (!_isLoaded) {
       return const SizedBox.shrink();
     }
+    // For single checkboxes, hide if label is missing
+    if (widget.variant == CheckboxVariant.single &&
+        (widget.label == null || widget.label!.trim().isEmpty)) {
+      return const SizedBox.shrink();
+    }
 
     if (widget.variant == CheckboxVariant.group) {
       return _buildCheckboxGroup();
     }
-        
-              // For single checkboxes, use controller if provided, otherwise use valueNotifier or local one
-     // Note: If only 'value' is provided, the checkbox will be interactive and state will persist
-     final valueNotifier = widget.controller != null 
-         ? ValueNotifier<String>(widget.controller!.value)
-         : widget.valueNotifier ?? _localValueNotifier ?? ValueNotifier<String>("no");
-     
-     return ValueListenableBuilder<String>(
-       valueListenable: valueNotifier,
-       builder: (context, value, child) {
+
+    // For single checkboxes, use controller if provided, otherwise use valueNotifier or local one
+    // Note: If only 'value' is provided, the checkbox will be interactive and state will persist
+    final valueNotifier = widget.controller != null
+        ? ValueNotifier<String>(widget.controller!.value)
+        : widget.valueNotifier ??
+            _localValueNotifier ??
+            ValueNotifier<String>("no");
+
+    return ValueListenableBuilder<String>(
+      valueListenable: valueNotifier,
+      builder: (context, value, child) {
         final config = AppzCheckboxStyleConfig.instance;
 
         final double boxWidth = config.getWidth();
@@ -237,18 +249,20 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
         // Use controller's enabled state if available, otherwise use widget's enabled
         final bool isEnabled = widget.controller?.enabled ?? widget.enabled;
 
-                         Widget checkboxWidget = GestureDetector(
-           onTap: isEnabled ? () {
-             // Call onTap callback if provided
-             widget.onTap?.call();
-             
-             // Update value based on controller or valueNotifier
-             if (widget.controller != null) {
-               widget.controller!.toggle();
-             } else {
-               valueNotifier.value = value == "yes" ? "no" : "yes";
-             }
-           } : null,
+        Widget checkboxWidget = GestureDetector(
+          onTap: isEnabled
+              ? () {
+                  // Call onTap callback if provided
+                  widget.onTap?.call();
+
+                  // Update value based on controller or valueNotifier
+                  if (widget.controller != null) {
+                    widget.controller!.toggle();
+                  } else {
+                    valueNotifier.value = value == "yes" ? "no" : "yes";
+                  }
+                }
+              : null,
           child: SizedBox(
             width: containerWidth,
             height: containerHeight,
@@ -261,17 +275,21 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
                     width: boxWidth,
                     height: boxHeight,
                     clipBehavior: Clip.antiAlias,
-                                         decoration: BoxDecoration(
-                       color: value == "yes" && isEnabled ? activeBackgroundColor : Colors.transparent,
-                       borderRadius: BorderRadius.circular(borderRadius),
-                       border: value == "yes"
-                           ? null
-                           : Border.all(
-                               width: borderWidth,
-                               color: isEnabled ? inactiveBorderColor : inactiveBorderColor.withValues(alpha: 0.5),
-                             ),
-                     ),
-                     child: value == "yes" && isEnabled
+                    decoration: BoxDecoration(
+                      color: value == "yes" && isEnabled
+                          ? activeBackgroundColor
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      border: value == "yes"
+                          ? null
+                          : Border.all(
+                              width: borderWidth,
+                              color: isEnabled
+                                  ? inactiveBorderColor
+                                  : inactiveBorderColor.withValues(alpha: 0.5),
+                            ),
+                    ),
+                    child: value == "yes" && isEnabled
                         ? Center(
                             child: SvgPicture.asset(
                               AppzIcons.check,
@@ -292,35 +310,53 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
         );
 
         Widget? textContent;
-        if (widget.label != null || widget.subtitle != null) {
+        if (widget.label != null &&
+            widget.label!.trim().isNotEmpty &&
+            widget.subtitle != null &&
+            widget.subtitle!.trim().isNotEmpty) {
+          // Both label and subtitle present: render as usual
           textContent = Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (widget.label != null)
-                  AppzText(
-                    widget.label!,
-                    category: 'input',
-                    fontWeight: 'regular',
-                    color: isEnabled 
-                      ? config.getLabelColor() 
+                AppzText(
+                  widget.label!,
+                  category: 'input',
+                  fontWeight: 'regular',
+                  color: isEnabled
+                      ? config.getLabelColor()
                       : config.getDisabledLabelColor(),
-                  ),
-                if (widget.subtitle != null) ...[
-                  SizedBox(height: config.getSubtitleSpacing()),
-                  AppzText(
-                    widget.subtitle!,
-                    category: 'label',
-                    fontWeight: 'regular',
-                    color: isEnabled 
-                      ? config.getSubtitleColor() 
+                ),
+                SizedBox(height: config.getSubtitleSpacing()),
+                AppzText(
+                  widget.subtitle!,
+                  category: 'label',
+                  fontWeight: 'regular',
+                  color: isEnabled
+                      ? config.getSubtitleColor()
                       : config.getDisabledSubtitleColor(),
-                  ),
-                ],
+                ),
               ],
             ),
           );
+        } else if (widget.label != null &&
+            widget.label!.trim().isNotEmpty &&
+            (widget.subtitle == null || widget.subtitle!.trim().isEmpty)) {
+          // Only label present: render with subtitle styling
+          textContent = Expanded(
+            child: AppzText(
+              widget.label!,
+              category: 'label',
+              fontWeight: 'regular',
+              color: isEnabled
+                  ? config.getSubtitleColor()
+                  : config.getDisabledSubtitleColor(),
+            ),
+          );
+        } else {
+          // Only subtitle or nothing: render nothing
+          textContent = null;
         }
 
         if (widget.alignment == CheckboxAlignment.left) {
@@ -356,46 +392,50 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
     final config = AppzCheckboxStyleConfig.instance;
     // Use controller's enabled state if available, otherwise use widget's enabled
     final bool isEnabled = widget.controller?.enabled ?? widget.enabled;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label != null)
+        if (widget.label != null && widget.label!.trim().isNotEmpty)
           AppzText(
             widget.label!,
-            category: 'input',
+            category: 'label',
             fontWeight: 'regular',
             color: isEnabled
-                ? config.getLabelColor()
-                : config.getDisabledLabelColor(),
+                ? config.getSubtitleColor()
+                : config.getDisabledSubtitleColor(),
           ),
-        const SizedBox(height: 12),
+        if (widget.label != null && widget.label!.trim().isNotEmpty)
+          const SizedBox(height: 12),
         _buildGroupCheckboxes(),
       ],
     );
   }
 
-    Widget _buildGroupCheckboxes() {
+  Widget _buildGroupCheckboxes() {
     final config = AppzCheckboxStyleConfig.instance;
     if (widget.selectedIndicesNotifier != null || widget.controller != null) {
-      final selectedIndicesNotifier = widget.controller != null 
+      final selectedIndicesNotifier = widget.controller != null
           ? ValueNotifier<List<int>>(widget.controller!.selectedIndices)
           : widget.selectedIndicesNotifier!;
-          
+
       return ValueListenableBuilder<List<int>>(
         valueListenable: selectedIndicesNotifier,
         builder: (context, selectedIndices, child) {
           final items = widget.groupItems ?? [];
-          
+
           return Wrap(
-            spacing: config.getGroupSpacing(), // Horizontal spacing between items
-            runSpacing: config.getGroupRunSpacing(), // Vertical spacing between rows
+            spacing:
+                config.getGroupSpacing(), // Horizontal spacing between items
+            runSpacing:
+                config.getGroupRunSpacing(), // Vertical spacing between rows
             children: items.asMap().entries.map((entry) {
               final index = entry.key;
               final item = entry.value;
               // Always use selectedIndices as the source of truth
               final isSelected = selectedIndices.contains(index);
-              return _buildSingleCheckbox(item.label, isSelected, widget.enabled, index);
+              return _buildSingleCheckbox(
+                  item.label, isSelected, widget.enabled, index);
             }).toList(),
           );
         },
@@ -404,7 +444,8 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
     return const SizedBox.shrink();
   }
 
-  Widget _buildSingleCheckbox(String label, bool value, bool enabled, int index) {
+  Widget _buildSingleCheckbox(
+      String label, bool value, bool enabled, int index) {
     final config = AppzCheckboxStyleConfig.instance;
     // Use controller's enabled state if available, otherwise use the passed enabled parameter
     final bool isEnabled = widget.controller?.enabled ?? enabled;
@@ -420,13 +461,13 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
     final double containerWidth = config.getContainerWidth();
     final double offsetX = (containerWidth - boxWidth) / 2;
     final double offsetY = (containerHeight - boxHeight) / 2;
-    
+
     Widget checkboxWidget = GestureDetector(
       onTap: isEnabled
           ? () {
               // Call onTap callback if provided
               widget.onTap?.call();
-              
+
               // For group checkboxes, we need to handle individual item clicks
               if (widget.variant == CheckboxVariant.group) {
                 if (widget.controller != null) {
@@ -434,8 +475,9 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
                   widget.controller!.toggleIndex(index);
                 } else if (widget.selectedIndicesNotifier != null) {
                   // Multi-selection mode
-                  final currentSelectedIndices = List<int>.from(widget.selectedIndicesNotifier!.value);
-                  
+                  final currentSelectedIndices =
+                      List<int>.from(widget.selectedIndicesNotifier!.value);
+
                   // Toggle the clicked item
                   if (currentSelectedIndices.contains(index)) {
                     // Remove from selection
@@ -444,8 +486,9 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
                     // Add to selection
                     currentSelectedIndices.add(index);
                   }
-                  
-                  widget.selectedIndicesNotifier!.value = currentSelectedIndices;
+
+                  widget.selectedIndicesNotifier!.value =
+                      currentSelectedIndices;
                 }
               } else {
                 // Single checkbox - handled by ValueNotifier in build method
@@ -497,7 +540,7 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
         ),
       ),
     );
-    
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -517,4 +560,4 @@ class _AppzCheckboxState extends State<AppzCheckbox> {
       ],
     );
   }
-} 
+}
