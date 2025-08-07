@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'toggle_style_config.dart';
 
 enum AppzToggleSize { small, large }
@@ -121,4 +121,167 @@ class _AppzToggleState extends State<AppzToggle> {
       ),
     );
   }
-} 
+}*/
+import 'package:apz_flutter_components/components/appz_text/appz_text.dart';
+import 'package:flutter/material.dart';
+//import 'package:flutter_components/components/appz_text/appz_text.dart';
+import 'toggle_style_config.dart';
+ 
+enum AppzToggleAppearance {
+  primary,
+  secondary,
+  tertiary,
+}
+ 
+enum AppzToggleSize {
+  small,
+  large,
+}
+ 
+class AppzToggleSwitch extends StatefulWidget {
+  final String label;
+  final AppzToggleAppearance appearance;
+  final AppzToggleSize size;
+  final String? subtitle;
+  final bool isToggled;
+  final VoidCallback? onTap;
+  final TextEditingController? controller;
+ 
+  const AppzToggleSwitch({
+    Key? key,
+    required this.label,
+    this.appearance = AppzToggleAppearance.primary,
+    this.size = AppzToggleSize.large,
+    this.subtitle,
+    this.isToggled = false,
+    this.onTap,
+    this.controller,
+  }) : super(key: key);
+ 
+  @override
+  _AppzToggleSwitchState createState() => _AppzToggleSwitchState();
+}
+ 
+class _AppzToggleSwitchState extends State<AppzToggleSwitch> {
+  bool _isToggled = false;
+  bool _configLoaded = false;
+ 
+  @override
+  void initState() {
+    super.initState();
+    _isToggled = widget.isToggled;
+    _loadConfig();
+  }
+ 
+  Future<void> _loadConfig() async {
+    await ToggleStyleConfig.instance.load();
+    if (mounted) setState(() => _configLoaded = true);
+  }
+ 
+  @override
+  Widget build(BuildContext context) {
+    if (!_configLoaded) {
+      return const SizedBox.shrink();
+    }
+ 
+    final config = ToggleStyleConfig.instance;
+    final sizeVariant = widget.size == AppzToggleSize.small ? 'small' : 'large';
+ 
+    final width = config.size('width', sizeVariant: sizeVariant);
+    final height = config.size('height', sizeVariant: sizeVariant);
+    final thumbSize = config.size('thumbSize', sizeVariant: sizeVariant);
+    final padding = config.size('padding', sizeVariant: sizeVariant);
+ 
+    final toggle = GestureDetector(
+      onTap: () {
+        setState(() {
+          _isToggled = !_isToggled;
+        });
+        if (widget.onTap != null) {
+          widget.onTap!();
+        }
+      },
+      child: Container(
+        width: width,
+        height: height,
+        padding: EdgeInsets.all(padding),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: _isToggled ? config.getActiveColor() : config.getInactiveColor(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Align(
+          alignment: _isToggled ? Alignment.centerRight : Alignment.centerLeft,
+          child: Container(
+            width: thumbSize,
+            height: thumbSize,
+            decoration: ShapeDecoration(
+              color: config.getThumbColor(),
+              shape: const OvalBorder(),
+              shadows: [
+                const BoxShadow(
+                  color: Color(0x0F101828),
+                  blurRadius: 2,
+                  offset: Offset(0, 1),
+                  spreadRadius: 0,
+                ),
+                const BoxShadow(
+                  color: Color(0x19101828),
+                  blurRadius: 3,
+                  offset: Offset(0, 1),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+ 
+    final labelAndSubtitle = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppzText(
+          widget.label,
+          category: 'label',
+          fontWeight: 'medium',
+        ),
+        if (widget.subtitle != null)
+          AppzText(
+            widget.subtitle!,
+            category: 'label',
+            fontWeight: 'regular',
+          ),
+      ],
+    );
+ 
+    switch (widget.appearance) {
+      case AppzToggleAppearance.primary:
+        return Column(
+          children: [
+            labelAndSubtitle,
+            const SizedBox(height: 8),
+            toggle,
+          ],
+        );
+      case AppzToggleAppearance.secondary:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            labelAndSubtitle,
+            toggle,
+          ],
+        );
+      case AppzToggleAppearance.tertiary:
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            toggle,
+            labelAndSubtitle,
+          ],
+        );
+    }
+  }
+}

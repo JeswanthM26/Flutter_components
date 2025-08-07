@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:apz_flutter_components/components/appz_modal_header/appz_modal_header.dart';
-import 'package:apz_flutter_components/components/appz_image/appz_image.dart';
-import 'package:apz_flutter_components/components/appz_image/appz_assets.dart';
 
 class AppzModalHeaderExample extends StatefulWidget {
   const AppzModalHeaderExample({super.key});

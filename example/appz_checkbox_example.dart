@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../lib/components/appz_checkbox/appz_checkbox.dart';
-import '../lib/components/appz_text/appz_text.dart';
 
 class AppzCheckboxExample extends StatefulWidget {
   const AppzCheckboxExample({super.key});
@@ -21,12 +20,6 @@ class _AppzCheckboxExampleState extends State<AppzCheckboxExample> {
 
   // Group items for checkbox examples
   final List<CheckboxItem> _preferencesGroupItems = [
-    CheckboxItem(label: 'Email notifications', value: "yes"),
-    CheckboxItem(label: 'Push notifications', value: "yes"),
-    CheckboxItem(label: 'SMS notifications', value: "no"),
-    CheckboxItem(label: 'Email notifications', value: "yes"),
-    CheckboxItem(label: 'Push notifications', value: "yes"),
-    CheckboxItem(label: 'SMS notifications', value: "no"),
     CheckboxItem(label: 'Email notifications', value: "yes"),
     CheckboxItem(label: 'Push notifications', value: "yes"),
     CheckboxItem(label: 'SMS notifications', value: "no"),
