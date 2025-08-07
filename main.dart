@@ -23,6 +23,7 @@ import 'package:apz_flutter_components/components/appz_toggle/toggle_style_confi
 import 'package:apz_flutter_components/components/appz_toggle_with_label/toggle_with_label_style_config.dart';
 import 'package:apz_flutter_components/components/apz_menu/apz_menu_style_config.dart';
 
+import 'example/appz_toggle_example.dart';
 import 'example/apz_list_content_example.dart';
 import 'example/apz_menu_example.dart';
 
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const AppzBadgesExample(),
+      home: AppzToggleExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
