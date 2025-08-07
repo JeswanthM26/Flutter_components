@@ -20,7 +20,6 @@ import 'example/appz_modal_header_example.dart';
 import 'example/appz_category_example.dart';
 import 'package:apz_flutter_components/components/appz_radio/radio_style_config.dart';
 import 'package:apz_flutter_components/components/appz_toggle/toggle_style_config.dart';
-import 'package:apz_flutter_components/components/appz_toggle_with_label/toggle_with_label_style_config.dart';
 import 'package:apz_flutter_components/components/apz_menu/apz_menu_style_config.dart';
 
 import 'example/appz_toggle_example.dart';
@@ -41,7 +40,6 @@ Future<void> main() async {
   await AppzCategoryStyleConfig.instance.load();
   await RadioStyleConfig.instance.load();
   await ToggleStyleConfig.instance.load();
-  await ToggleWithLabelStyleConfig.instance.load();
   await AppzBadgesStyleConfig.instance.load();
   await AppzTextStyleConfig.instance.load();
   await ApzListContentStyleConfig.instance.load();
