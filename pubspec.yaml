@@ -17,6 +17,7 @@ dependencies:
   file_picker: ^10.2.0
   url_launcher: ^6.2.5
   flutter_svg: ^2.2.0
+  calendar_date_picker2: ^1.0.0
 
 dev_dependencies:
   flutter_test:

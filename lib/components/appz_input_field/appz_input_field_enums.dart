@@ -38,4 +38,7 @@ enum AppzFieldType {
 
   /// A field for displaying or entering longer text descriptions, potentially read-only or auto-resizing.
   textDescription,
+
+
+  datepicker,
 }

@@ -377,7 +377,9 @@ class _AadhaarInputWidgetState extends State<AadhaarInputWidget> {
     }
 
     // clear error if valid
-    if (combinedValue.length == 12 && RegExp(r'^\d{12}\$').hasMatch(combinedValue)) {
+    // if (combinedValue.length == 12 && RegExp(r'^\d{12}\$').hasMatch(combinedValue)) {
+    if (combinedValue.length == 12 && RegExp(r'^\d{12}$').hasMatch(combinedValue)) {
+
       setState(() {
         _showError = false;
         _errorMessage = null;
@@ -450,11 +452,12 @@ class _AadhaarInputWidgetState extends State<AadhaarInputWidget> {
               ),
               decoration: InputDecoration(
                 counterText: "",
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: widget.currentStyle.paddingHorizontal,
-                  vertical: widget.currentStyle.paddingVertical,
-                ),
+                // contentPadding: EdgeInsets.symmetric(
+                //   horizontal: widget.currentStyle.paddingHorizontal,
+                //   vertical: widget.currentStyle.paddingVertical,
+                // ),
                 //contentPadding: EdgeInsets.symmetric(vertical: widget.currentStyle.paddingVertical / 1.5),
+                 contentPadding: EdgeInsets.symmetric(vertical: widget.currentStyle.paddingVertical / 1.5),
                 filled: true,
                 fillColor: widget.currentStyle.backgroundColor,
                 border: _getSegmentInputBorder(i),
@@ -481,13 +484,13 @@ class _AadhaarInputWidgetState extends State<AadhaarInputWidget> {
         Focus(
           focusNode: widget.mainFocusNode,
           skipTraversal: true,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: widget.currentStyle.paddingHorizontal / 2,
-              vertical: widget.currentStyle.paddingVertical / 2,
-            ),
+          // child: Container(
+          //   padding: EdgeInsets.symmetric(
+          //     horizontal: widget.currentStyle.paddingHorizontal / 2,
+          //     vertical: widget.currentStyle.paddingVertical / 2,
+          //   ),
             child: Row(children: segmentWidgets),
-          ),
+       //   ),
         ),
         if (_showError && _errorMessage != null)
           Padding(
