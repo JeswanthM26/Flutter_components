@@ -14,6 +14,7 @@ import 'example/appz_alert_example.dart';
 import 'example/appz_badges_example.dart';
 import 'example/appz_checkbox_example.dart';
 import 'example/appz_footer_example.dart';
+import 'example/appz_footer_menu_example.dart';
 import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
 import 'example/appz_input_field_example_page.dart';
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: ApzMenuExample(),
+      home: AppzFooterMenuExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }

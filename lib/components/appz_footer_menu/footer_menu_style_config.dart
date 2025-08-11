@@ -197,6 +197,10 @@ class FooterMenuStyleConfig {
       _tokenParser.getValue<double>(['footerMenu', 'bottomNav', 'height'],
           fromSupportingTokens: true) ??
       88.0;
+  double get bottomNavHeightWithLabels =>
+      _tokenParser.getValue<double>(['footerMenu', 'bottomNav', 'height_withLabels'],
+          fromSupportingTokens: true) ??
+      110.0;
   double get bottomNavMargin =>
       _tokenParser.getValue<double>(['footerMenu', 'bottomNav', 'margin'],
           fromSupportingTokens: true) ??
@@ -250,6 +254,19 @@ class FooterMenuStyleConfig {
         fromSupportingTokens: true,
       ) ??
       60.0;
+  Color get bottomNavActiveTextColor =>
+      _parseColor(_tokenParser.getValue<String>(
+        ['footerMenu', 'bottomNav', 'activeTextColor'],
+        fromSupportingTokens: true,
+      )) ??
+      Colors.black;
+
+  Color get bottomNavInactiveTextColor =>
+      _parseColor(_tokenParser.getValue<String>(
+        ['footerMenu', 'bottomNav', 'inactiveTextColor'],
+        fromSupportingTokens: true,
+      )) ??
+      Colors.grey;
 
   double get bottomNavContainerPaddingHorizontal =>
       _tokenParser.getValue<double>(

@@ -4,6 +4,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 
 import 'footer_menu_style_config.dart';
 import 'model/footer_menu_item.dart';
+import '../appz_text/appz_text.dart';
 
 class AppzFooterMenu extends StatefulWidget {
   final List<FooterMenuItem> menuItems;
@@ -11,15 +12,17 @@ class AppzFooterMenu extends StatefulWidget {
   final Function(int)? onItemSelected;
   final VoidCallback? onFabTap;
   final String? fabIconPath;
+  final bool showLabels; // Optional: to show labels under icons
 
   const AppzFooterMenu({
-    Key? key,
+    super.key,
     required this.menuItems,
     this.selectedIndex = 0,
     this.onItemSelected,
     this.onFabTap,
     this.fabIconPath,
-  }) : super(key: key);
+    this.showLabels = false,
+  });
 
   @override
   State<AppzFooterMenu> createState() => _AppzFooterMenuState();
@@ -78,8 +81,8 @@ class _AppzFooterMenuState extends State<AppzFooterMenu> {
         notchSmoothness: NotchSmoothness.verySmoothEdge,
         leftCornerRadius: _styleConfig.leftCornerRadius,
         rightCornerRadius: _styleConfig.rightCornerRadius,
-        notchMargin: 10,
-        height: _styleConfig.bottomNavHeight,
+        notchMargin: _styleConfig.bottomNavNotchMargin,
+        height: widget.showLabels ? _styleConfig.bottomNavHeightWithLabels : _styleConfig.bottomNavHeight,
         shadow: _styleConfig.bottomNavShadow,
         tabBuilder: (index, isActive) {
           final item = widget.menuItems[index];
@@ -99,11 +102,32 @@ class _AppzFooterMenuState extends State<AppzFooterMenu> {
               borderRadius:
                   BorderRadius.circular(_styleConfig.bottomNavBorderRadius),
             ),
-            child: SvgPicture.asset(
-              item.iconPath,
-              width: _styleConfig.menuItemIconSize,
-              height: _styleConfig.menuItemIconSize,
-            ),
+            child: widget.showLabels
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        item.iconPath,
+                        width: _styleConfig.menuItemIconSize,
+                        height: _styleConfig.menuItemIconSize,
+                      ),
+                      const SizedBox(
+                          height: 4), // spacing between icon and label
+                      AppzText(
+                        item.label, // ensure FooterMenuItem has label field
+                        category: 'paragraph',
+                        fontWeight: 'regular',
+                        color: isActive
+                            ? _styleConfig.bottomNavActiveTextColor
+                            : _styleConfig.bottomNavInactiveTextColor,
+                      ),
+                    ],
+                  )
+                : SvgPicture.asset(
+                    item.iconPath,
+                    width: _styleConfig.menuItemIconSize,
+                    height: _styleConfig.menuItemIconSize,
+                  ),
           );
         },
         onTap: (index) {
