@@ -1,84 +1,27 @@
 import 'package:flutter/material.dart';
-import '../appz_text/appz_text.dart';
-import 'loader_style_config.dart';
+import 'appz_loader_service.dart';
 
-class AppzLoader extends StatefulWidget {
-  final String? assetPath;
-  final String? imageUrl;
-  final double? height;
-  final double? width;
-  final Widget? label;
-
-  const AppzLoader({
-    Key? key,
-    this.assetPath,
-    this.imageUrl,
-    this.height,
-    this.width,
-    this.label,
-  }) : super(key: key);
-
-  @override
-  State<AppzLoader> createState() => _AppzLoaderState();
-}
-
-class _AppzLoaderState extends State<AppzLoader> {
-  bool _configLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadConfig();
-  }
-
-  Future<void> _loadConfig() async {
-    await LoaderStyleConfig.instance.load();
-    if (mounted) setState(() => _configLoaded = true);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!_configLoaded) {
-      return const SizedBox.shrink();
-    }
-
-    final config = LoaderStyleConfig.instance;
-    final double resolvedHeight = widget.height ?? config.size('defaultHeight');
-    final double resolvedWidth = widget.width ?? config.size('defaultWidth');
-
-    Widget gifWidget;
-
-    if (widget.assetPath != null) {
-      gifWidget = SizedBox(
-        height: resolvedHeight,
-        width: resolvedWidth,
-        child: Image.asset(
-          widget.assetPath!,
-          fit: BoxFit.fill,
-        ),
-      );
-    } else if (widget.imageUrl != null) {
-      gifWidget = SizedBox(
-        height: resolvedHeight,
-        width: resolvedWidth,
-        child: Image.network(
-          widget.imageUrl!,
-          fit: BoxFit.fill,
-        ),
-      );
-    } else {
-      gifWidget = SizedBox(height: resolvedHeight, width: resolvedWidth);
-    }
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        gifWidget,
-        if (widget.label != null) ...[
-          const SizedBox(height: 2),
-          widget.label!,
-        ]
-      ],
+/// A utility class providing an easy-to-use API for the global loader.
+class AppzLoader {
+  /// - [customLoaderPath]: The path to a project-level loader GIF asset.
+  /// - [size]: The default size (width and height) for the loader.
+  static void init({String? customLoaderPath, double? size}) {
+    AppzLoaderService.instance.init(
+      customLoaderPath: customLoaderPath,
+      size: size,
     );
   }
-} 
+
+  /// Displays the full-screen global loader.
+  ///
+  /// The UI behind the loader will be blurred and will not be interactive.
+  /// Requires a [BuildContext] to access the app's overlay.
+  static void startLoader(BuildContext context) {
+    AppzLoaderService.instance.show(context);
+  }
+
+  /// Hides the global loader.
+  static void stopLoader() {
+    AppzLoaderService.instance.hide();
+  }
+}
