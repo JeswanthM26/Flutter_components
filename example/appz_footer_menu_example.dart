@@ -165,6 +165,7 @@ class _AppzFooterMenuExampleState extends State<AppzFooterMenuExample> {
         onFabTap: _onFabTap,
         fabIconPath:
             'assets/icons/search.svg', // You can override the FAB icon here
+        showLabels: true, // Set to false to hide labels
       ),
     );
   }
