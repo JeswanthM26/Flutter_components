@@ -98,7 +98,20 @@ class _AppzInputFieldExamplePageState extends State<AppzInputFieldExamplePage> {
                 },
               ),
               const SizedBox(height: 20),
-
+               const SizedBox(height: 12),
+                  const Text('Date Picker'),
+                  AppzInputField(
+                    label: 'Start Date',
+                    hintText: 'Select a date',
+                    fieldType: AppzFieldType.datepicker,
+                    minDate: "2020-01-01",
+                    maxDate: "2025-12-31",
+                    initialDate: DateTime.now(),
+                    onDateSelected: (date) {
+                      // ignore: avoid_print
+                      print('Selected Date: $date');
+                    },
+                  ),
               const Text("Password (Obscured, Error on Empty Submit):", style: TextStyle(fontWeight: FontWeight.bold)),
               AppzInputField(
                 label: 'Password',
@@ -137,7 +150,7 @@ class _AppzInputFieldExamplePageState extends State<AppzInputFieldExamplePage> {
                 controller: _mobileController, // Will store "+91XXXXXXXXXX"
                 fieldType: AppzFieldType.mobile,
                 // mobileCountryCode: "+91", // Default
-                validationType: AppzInputValidationType.mandatory,
+                validationType: AppzInputValidationType.amount,
                 validator: (numberPart) { // This validator receives ONLY the 10-digit number part
                   if (numberPart != null && numberPart.startsWith('0')) {
                     return 'Number should not start with 0.';
