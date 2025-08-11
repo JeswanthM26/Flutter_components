@@ -53,13 +53,13 @@
 //       ),
 //     );
 //   }
-// } 
+// }
 import 'package:apz_flutter_components/components/appz_toggle_button/appz_toggle_button.dart';
 import 'package:flutter/material.dart';
- 
+
 class AppzToggleButtonExample extends StatelessWidget {
   const AppzToggleButtonExample({Key? key}) : super(key: key);
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +76,7 @@ class AppzToggleButtonExample extends StatelessWidget {
             AppzToggleButton(
               label: 'Mode of transfer',
               options: const ['Yes', 'No'],
-              onTap: () {},
+              // onTap: () {},
             ),
             const SizedBox(height: 24),
             const Text('Secondary Appearance'),
@@ -85,7 +85,7 @@ class AppzToggleButtonExample extends StatelessWidget {
               label: 'Mode of transfer',
               options: const ['Yes', 'No'],
               appearance: AppzToggleButtonAppearance.secondary,
-              onTap: () {},
+              //  onTap: () {},
             ),
           ],
         ),
@@ -93,5 +93,3 @@ class AppzToggleButtonExample extends StatelessWidget {
     );
   }
 }
- 
- 
