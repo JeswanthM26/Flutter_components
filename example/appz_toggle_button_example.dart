@@ -76,7 +76,7 @@ class AppzToggleButtonExample extends StatelessWidget {
             AppzToggleButton(
               label: 'Mode of transfer',
               options: const ['Yes', 'No'],
-              onTap: () {},
+              // onTap: () {},
             ),
             const SizedBox(height: 24),
             const Text('Secondary Appearance'),
@@ -85,7 +85,7 @@ class AppzToggleButtonExample extends StatelessWidget {
               label: 'Mode of transfer',
               options: const ['Yes', 'No'],
               appearance: AppzToggleButtonAppearance.secondary,
-              onTap: () {},
+              // onTap: () {},
             ),
           ],
         ),
