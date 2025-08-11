@@ -18,6 +18,7 @@ import 'example/appz_footer_menu_example.dart';
 import 'example/appz_image_example.dart';
 import 'example/appz_category_list_example.dart';
 import 'example/appz_input_field_example_page.dart';
+import 'example/appz_loader_example.dart';
 import 'example/appz_modal_header_example.dart';
 import 'example/appz_category_example.dart';
 import 'package:apz_flutter_components/components/appz_radio/radio_style_config.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: AppzFooterMenuExample(),
+      home: AppzLoaderExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }

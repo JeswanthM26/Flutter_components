@@ -243,13 +243,8 @@ class _ApzMenuState extends State<ApzMenu> {
             ),
             // Tap outside to dismiss
             Positioned.fill(
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () {
-                  print('Tap outside detected');
-                  MenuOverlayManager.hide();
-                  _currentEntry = null;
-                },
+              child: Container(
+                color: Colors.black.withOpacity(0.3), // or 0.0 if no dim
               ),
             ),
             Positioned(
