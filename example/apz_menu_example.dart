@@ -10,7 +10,24 @@ class ApzMenuExample extends StatefulWidget {
 }
 
 class _ApzMenuExampleState extends State<ApzMenuExample> {
-  bool _isMenuVisible = false;
+  late final List<MenuItem> _menuItems;
+
+  @override
+  void initState() {
+    super.initState();
+    _menuItems = [
+      const MenuItem(text: 'My performance'),
+      const MenuItem(text: 'Certifications'),
+      const MenuItem(text: 'Training Hub'),
+      const MenuItem(text: 'Contacts'),
+      const MenuItem(text: 'Settings'),
+      const MenuItem(text: 'Help'),
+      const MenuItem(text: 'Feedback'),
+      const MenuItem(text: 'About'),
+      const MenuItem(text: 'Privacy Policy'),
+      const MenuItem(text: 'Terms of Service'),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,116 +39,45 @@ class _ApzMenuExampleState extends State<ApzMenuExample> {
       ),
       body: Stack(
         children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'ApzMenu Component Demo',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          // Position the menu button
+          Positioned(
+            // top: 30,
+            bottom: 30,
+            right: 30,
+            child: ApzMenu(
+              items: _menuItems,
+              position: ApzMenuPosition.top,
+              onMenuItemTap: (text) {
+                print('$text tapped');
+              },
+              signOutText: 'Sign out',
+              onSignOut: () {
+                print('Sign out tapped');
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                AppzButton(
-                  label: _isMenuVisible ? 'Hide Menu' : 'Show Menu',
-                  appearance: AppzButtonAppearance.primary,
-                  onPressed: () {
-                    print('Button pressed, menu visibility: $_isMenuVisible');
-                    setState(() {
-                      _isMenuVisible = !_isMenuVisible;
-                    });
-                    print('Menu visibility changed to: $_isMenuVisible');
-                  },
+                child: const Text(
+                  'Show Menu (Top)',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  'Menu is ${_isMenuVisible ? 'visible' : 'hidden'}',
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Debug: Menu should appear in top-right corner',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-          if (_isMenuVisible)
-            Positioned(
-              top: 80,
-              right: 16,
-              child: ApzMenu(
-                items: [
-                  MenuItem(
-                    text: 'My performance',
-                    onTap: () {
-                      print('My performance tapped');
-                      setState(() {
-                        _isMenuVisible = false;
-                      });
-                    },
-                    type: MenuItemType.regular,
-                  ),
-                  MenuItem(
-                    text: 'Certifications',
-                    onTap: () {
-                      print('Certifications tapped');
-                      setState(() {
-                        _isMenuVisible = false;
-                      });
-                    },
-                    type: MenuItemType.regular,
-                  ),
-                  MenuItem(
-                    text: 'Training Hub',
-                    onTap: () {
-                      print('Training Hub tapped');
-                      setState(() {
-                        _isMenuVisible = false;
-                      });
-                    },
-                    type: MenuItemType.regular,
-                  ),
-                  MenuItem(
-                    text: 'Contacts',
-                    onTap: () {
-                      print('Contacts tapped');
-                      setState(() {
-                        _isMenuVisible = false;
-                      });
-                    },
-                    type: MenuItemType.regular,
-                  ),
-                  MenuItem(
-                    text: 'Settings',
-                    onTap: () {
-                      print('Settings tapped');
-                      setState(() {
-                        _isMenuVisible = false;
-                      });
-                    },
-                    type: MenuItemType.regular,
-                  ),
-                  MenuItem(
-                    text: 'Sign out',
-                    onTap: () {
-                      print('Sign out tapped');
-                      setState(() {
-                        _isMenuVisible = false;
-                      });
-                    },
-                    type: MenuItemType.signout,
-                  ),
-                ],
-                onClose: () {
-                  print('Close button tapped');
-                  setState(() {
-                    _isMenuVisible = false;
-                  });
-                },
               ),
             ),
+          ),
         ],
       ),
     );
   }
-} 
+}

@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: AppzInputFieldExamplePage(),
+      home: ApzMenuExample(),
       debugShowCheckedModeBanner: false, // Optional: to hide the debug banner
     );
   }
