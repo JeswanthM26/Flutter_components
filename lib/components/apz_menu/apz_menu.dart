@@ -81,16 +81,16 @@ class _ApzMenuState extends State<ApzMenu> {
   }
 
   Future<void> _loadConfig() async {
-    print('Loading config...');
+//    print('Loading config...');
     try {
       await Future.wait([
         ApzMenuStyleConfig.instance.load(),
         AppzTextStyleConfig.instance.load(),
       ]);
-      print('Config loaded successfully');
+      //  print('Config loaded successfully');
       if (mounted) setState(() => _configLoaded = true);
     } catch (e) {
-      print('Error loading config: $e');
+      //  print('Error loading config: $e');
       // Set config as loaded even if there's an error to prevent blocking
       if (mounted) setState(() => _configLoaded = true);
     }
@@ -199,11 +199,11 @@ class _ApzMenuState extends State<ApzMenu> {
   }
 
   void _showMenu() {
-    print('_showMenu called, _configLoaded: $_configLoaded');
-    if (!_configLoaded) {
-      print('Config not loaded yet, returning');
-      return;
-    }
+    // print('_showMenu called, _configLoaded: $_configLoaded');
+    // if (!_configLoaded) {
+    //   print('Config not loaded yet, returning');
+    //   return;
+    // }
 
     final renderBox = context.findRenderObject() as RenderBox;
     final Size targetSize = renderBox.size;
@@ -212,8 +212,8 @@ class _ApzMenuState extends State<ApzMenu> {
     final screenSize = MediaQuery.of(context).size;
     final double offset = 8.0;
 
-    print(
-        'Target size: $targetSize, Target center: $targetCenter, Screen size: $screenSize');
+    // print(
+    //'Target size: $targetSize, Target center: $targetCenter, Screen size: $screenSize');
 
     void insertOverlay([Size? measuredMenuSize]) {
       Size menuSize = measuredMenuSize ?? const Size(300, 400);
@@ -226,8 +226,8 @@ class _ApzMenuState extends State<ApzMenu> {
         position: widget.position,
       );
 
-      print(
-          'Menu size: $menuSize, Menu offset: $menuOffset, Position: ${widget.position}');
+      //print(
+      //  'Menu size: $menuSize, Menu offset: $menuOffset, Position: ${widget.position}');
 
       final entry = OverlayEntry(
         builder: (context) => Stack(
@@ -245,7 +245,7 @@ class _ApzMenuState extends State<ApzMenu> {
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  print('Tap outside detected');
+                  // print('Tap outside detected');
                   MenuOverlayManager.hide();
                   _currentEntry = null;
                 },
@@ -279,7 +279,7 @@ class _ApzMenuState extends State<ApzMenu> {
         ),
       );
 
-      print('Inserting overlay entry');
+      // print('Inserting overlay entry');
       MenuOverlayManager.show(context, entry);
       _currentEntry = entry;
     }
@@ -289,7 +289,7 @@ class _ApzMenuState extends State<ApzMenu> {
       final menuBox = _menuKey.currentContext?.findRenderObject() as RenderBox?;
       if (menuBox != null) {
         final actualMenuSize = menuBox.size;
-        print('Actual menu size: $actualMenuSize');
+        // print('Actual menu size: $actualMenuSize');
         MenuOverlayManager.hide();
         insertOverlay(actualMenuSize);
       }
