@@ -10,10 +10,15 @@ class TokenParser {
   Map<String, dynamic>? _supportingTokenData;
 
   Future<void> loadTokens() async {
-    final tokenString = await rootBundle.loadString('assets/json/token_variables.json');
+    if (_tokenData != null && _supportingTokenData != null) {
+      return;
+    }
+    final tokenString =
+        await rootBundle.loadString('assets/json/token_variables.json');
     _tokenData = json.decode(tokenString);
 
-    final supportingTokenString = await rootBundle.loadString('assets/json/supporting_tokens.json');
+    final supportingTokenString =
+        await rootBundle.loadString('assets/json/supporting_tokens.json');
     _supportingTokenData = json.decode(supportingTokenString);
   }
 
@@ -25,9 +30,13 @@ class TokenParser {
 
     dynamic currentValue = data;
     for (var key in path) {
-      if (key is String && currentValue is Map<String, dynamic> && currentValue.containsKey(key)) {
+      if (key is String &&
+          currentValue is Map<String, dynamic> &&
+          currentValue.containsKey(key)) {
         currentValue = currentValue[key];
-      } else if (key is int && currentValue is List && key < currentValue.length) {
+      } else if (key is int &&
+          currentValue is List &&
+          key < currentValue.length) {
         currentValue = currentValue[key];
       } else {
         return null;

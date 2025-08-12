@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'button_style_config.dart';
 
 enum AppzButtonAppearance { primary, secondary, tertiary }
+
 enum AppzButtonSize { small, medium, large }
 
 class AppzButton extends StatefulWidget {
@@ -30,9 +31,33 @@ class AppzButton extends StatefulWidget {
 
 class _AppzButtonState extends State<AppzButton> {
   bool _hovering = false;
+  bool _stylesLoaded = false; // Add a flag to track if styles are loaded.
+
+  @override
+  void initState() {
+    super.initState();
+
+    // When the button is created, start loading the styles.
+
+    ButtonStyleConfig.instance.load().then((_) {
+      // Once loading is complete, if the button is still on screen,
+
+      // trigger a rebuild to show the styled button.
+
+      if (mounted) {
+        setState(() {
+          _stylesLoaded = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (!_stylesLoaded) {
+      return const SizedBox.shrink();
+    }
+
     final cfg = ButtonStyleConfig.instance;
     final sizeStr = widget.size.name;
 
@@ -44,8 +69,10 @@ class _AppzButtonState extends State<AppzButton> {
   }
 
   Widget _buildPrimaryOrSecondaryButton(ButtonStyleConfig cfg, String sizeStr) {
-    final state = widget.disabled ? 'Disabled' : (_hovering ? 'Hover' : 'Default');
-    final appearanceStr = widget.appearance.name[0].toUpperCase() + widget.appearance.name.substring(1);
+    final state =
+        widget.disabled ? 'Disabled' : (_hovering ? 'Hover' : 'Default');
+    final appearanceStr = widget.appearance.name[0].toUpperCase() +
+        widget.appearance.name.substring(1);
 
     final bgColor = cfg.getColor('Button/$appearanceStr/$state');
     final borderColor = cfg.getColor('Button/$appearanceStr/$state outline');
@@ -64,7 +91,9 @@ class _AppzButtonState extends State<AppzButton> {
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
-      cursor: widget.disabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
+      cursor: widget.disabled
+          ? SystemMouseCursors.forbidden
+          : SystemMouseCursors.click,
       child: GestureDetector(
         onTap: widget.disabled ? null : widget.onPressed,
         child: Container(
@@ -72,7 +101,8 @@ class _AppzButtonState extends State<AppzButton> {
           padding: cfg.getPadding(sizeStr),
           decoration: BoxDecoration(
             color: bgColor,
-            borderRadius: BorderRadius.circular(cfg.getDouble('borderRadius', fromSupportingTokens: true) ?? 0),
+            borderRadius: BorderRadius.circular(
+                cfg.getDouble('borderRadius', fromSupportingTokens: true) ?? 0),
             border: Border.all(color: borderColor, width: 1.0),
           ),
           child: Row(
@@ -85,7 +115,9 @@ class _AppzButtonState extends State<AppzButton> {
               ],
               Text(
                 widget.label,
-                style: cfg.getTextStyle('Button/Semibold').copyWith(color: textColor),
+                style: cfg
+                    .getTextStyle('Button/Semibold')
+                    .copyWith(color: textColor),
               ),
               if (widget.iconTrailing != null) ...[
                 SizedBox(width: cfg.getGap(sizeStr)),
@@ -99,13 +131,16 @@ class _AppzButtonState extends State<AppzButton> {
   }
 
   Widget _buildTertiaryButton(ButtonStyleConfig cfg) {
-    final state = widget.disabled ? 'Disabled' : (_hovering ? 'Hover' : 'Default');
+    final state =
+        widget.disabled ? 'Disabled' : (_hovering ? 'Hover' : 'Default');
     final textColor = cfg.getColor('Text colour/Hyperlink/$state');
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
-      cursor: widget.disabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
+      cursor: widget.disabled
+          ? SystemMouseCursors.forbidden
+          : SystemMouseCursors.click,
       child: GestureDetector(
         onTap: widget.disabled ? null : widget.onPressed,
         child: Row(
@@ -118,7 +153,9 @@ class _AppzButtonState extends State<AppzButton> {
             ],
             Text(
               widget.label,
-              style: cfg.getTextStyle('Hyperlink/Medium').copyWith(color: textColor),
+              style: cfg
+                  .getTextStyle('Hyperlink/Medium')
+                  .copyWith(color: textColor),
             ),
             if (widget.iconTrailing != null) ...[
               const SizedBox(width: 4),
