@@ -233,18 +233,22 @@ class _ApzMenuState extends State<ApzMenu> {
         builder: (context) => Stack(
           children: [
             // Blurred background overlay
-            Positioned.fill(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                child: Container(
-                  color: Colors.black.withOpacity(0.3),
-                ),
-              ),
-            ),
-            // Tap outside to dismiss
+            // Dimmed background (no blur)
             Positioned.fill(
               child: Container(
                 color: Colors.black.withOpacity(0.3), // or 0.0 if no dim
+              ),
+            ),
+
+            // Tap outside to dismiss
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  print('Tap outside detected');
+                  MenuOverlayManager.hide();
+                  _currentEntry = null;
+                },
               ),
             ),
             Positioned(
